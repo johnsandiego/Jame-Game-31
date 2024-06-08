@@ -1,0 +1,57 @@
+[gd_scene load_steps=7 format=3 uid="uid://ctahk88q1msxw"]
+
+[ext_resource type="Texture2D" uid="uid://dq3d3ri4ixhr" path="res://assets/Cardtemplate.png" id="1_usdyg"]
+[ext_resource type="Texture2D" uid="uid://bssbox1o2wm7l" path="res://assets/CardtemplateClicked.png" id="2_0jubh"]
+[ext_resource type="Texture2D" uid="uid://ddqkbe2xmv2g8" path="res://assets/slime2.png" id="2_38as6"]
+[ext_resource type="Texture2D" uid="uid://3fa2yo2if4f5" path="res://assets/CardtemplateHover.png" id="3_mp7tk"]
+[ext_resource type="Theme" uid="uid://b23kdxlonntwv" path="res://card.tres" id="3_t0wxk"]
+[ext_resource type="Theme" uid="uid://c2r7boss2uppr" path="res://Carddescription.tres" id="4_8txpj"]
+
+[node name="StickySlime" type="TextureButton"]
+clip_contents = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -662.0
+offset_top = -333.0
+offset_right = 362.0
+offset_bottom = 691.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.553, 0.553)
+texture_normal = ExtResource("1_usdyg")
+texture_pressed = ExtResource("2_0jubh")
+texture_hover = ExtResource("3_mp7tk")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 265.0
+offset_top = 94.0
+offset_right = 780.0
+offset_bottom = 794.0
+texture = ExtResource("2_38as6")
+expand_mode = 1
+flip_h = true
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 66.0
+offset_right = 796.0
+offset_bottom = 124.0
+theme = ExtResource("3_t0wxk")
+text = "Sticky Slime"
+
+[node name="Description" type="Label" parent="."]
+layout_mode = 0
+offset_left = 221.0
+offset_top = 707.0
+offset_right = 796.0
+offset_bottom = 947.0
+theme = ExtResource("4_8txpj")
+text = "Launches a blob of sticky slime at the enemy which has a change to slow
+
+    -1 to speed"
+autowrap_mode = 2

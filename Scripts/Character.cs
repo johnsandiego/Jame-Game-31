@@ -98,8 +98,6 @@ public partial class Character : CharacterBody2D
 
     public void Attack(Character character, Action onAttackComplete)
     {
-        StartingPosition = GlobalPosition;
-
         var sliderTargetPosition = character.GlobalPosition + (GlobalPosition - character.GlobalPosition).Normalized() * 100f;
         targetCharacter = character;
         this.onAttackComplete = onAttackComplete;
@@ -117,7 +115,7 @@ public partial class Character : CharacterBody2D
         if(animName == "attack")
         {
             AttackFinished = true;
-            int damageAmount = new Random().Next(1, Strength);
+            int damageAmount = new Random().Next(Strength-10, Strength);
             targetCharacter.TakeDamage(damageAmount, () =>
             {
                 GD.Print("took damage");
@@ -175,16 +173,27 @@ public partial class Character : CharacterBody2D
         {
             Health = 0;
         }
-        onHit();
-        this.onHit = onHit;
+        if (onHit != null)
+        {
+            animPlayer.Play("hitflash");
+            onHit();
+        }
+    }
+
+    public void OnHurtBoxEntered(Node2D body)
+    {
+        if (body != null)
+        {
+            //animPlayer.Play("hitflash");
+        }
     }
 
     public void OnBodyEntered(Node2D body)
     {
         GD.Print(body);
-        if(body != null)
+        if (body != null)
         {
-            onHit();
+            
         }
     }
 
@@ -193,7 +202,16 @@ public partial class Character : CharacterBody2D
         GD.Print(body);
         if (body != null)
         {
-            onHit();
+            //animPlayer.Play("hitflash");
+        }
+    }
+
+    public void OnEnemyHurtBoxEntered(Node2D body)
+    {
+        GD.Print(body);
+        if (body != null)
+        {
+            //animPlayer.Play("hitflash");
         }
     }
 

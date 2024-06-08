@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b6f4ma7yaqipt"
-path="res://.godot/imported/skeleton.png-fd82ba27c67aaa346567dbd303a233f1.ctex"
+uid="uid://3fa2yo2if4f5"
+path="res://.godot/imported/CardtemplateHover.png-b5826c97812c71132c381f2ee61ff5b5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://skeleton.png"
-dest_files=["res://.godot/imported/skeleton.png-fd82ba27c67aaa346567dbd303a233f1.ctex"]
+source_file="res://assets/CardtemplateHover.png"
+dest_files=["res://.godot/imported/CardtemplateHover.png-b5826c97812c71132c381f2ee61ff5b5.ctex"]
 
 [params]
 

@@ -1,31 +1,45 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using static CardManager;
 
 public partial class TurnManager : Node
 {
-    public PackedScene playerScene = ResourceLoader.Load<PackedScene>("res://Scene/Player.tscn");
-    public PackedScene enemyScene = ResourceLoader.Load<PackedScene>("res://Scene/Slime.tscn");
-
-
-    private State state;
-    [Export]
-    public Node2D playerNode;
-    public Character player;
-
-    public bool isPlayerTurn;
-    private PlayerAction playerAction;
     [Export]
     public Node2D enemyNode;
-    public Character enemy;
-    public bool isEnemyTurn;
-    public Character activeCharacter;
+    [Export]
+    public Node2D playerNode;
 
     //ui
     [Export]
     public ProgressBar playerhealth;
     [Export]
     public ProgressBar enemyhealth;
+    [Export]
+    public Panel randomCard;
+    [Export]
+    public TextureButton card1Button;
+    [Export]
+    public TextureButton card2Button;
+    [Export]
+    public TextureButton card3Button;
+
+    public PackedScene playerScene = ResourceLoader.Load<PackedScene>("res://Scene/Player.tscn");
+    public PackedScene enemyScene = ResourceLoader.Load<PackedScene>("res://Scene/Slime.tscn");
+    private State state;
+
+    public Character player;
+
+    public bool isPlayerTurn;
+    private PlayerAction playerAction;
+
+    public Character enemy;
+    public bool isEnemyTurn;
+    public Character activeCharacter;
+    public CardManager cardManager;
+
+
+
     private enum State
     {
         WaitingForPlayer = 0,
@@ -42,29 +56,50 @@ public partial class TurnManager : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+        InitializeCharacters();
+        SetActiveCharacter(player);        
+        state = State.WaitingForPlayer;
+
+        //get reference
+        cardManager = randomCard.GetNode<CardManager>("RandomCard");
+        GD.Print(cardManager is CardManager);
+        cardManager.Equip += OnEquip;
+    }
+
+    public void OnEquip(CardType cardType)
+    {
+        switch(cardType)
+        {
+            case CardType.slime:
+                card1Button.Visible = true;
+                //later apply texture of card
+                // apply title and description
+                break;
+            case CardType.skeleton: break;
+            case CardType.goblin: break;
+            case CardType.troll: break;
+            case CardType.vampire: break;
+        }
+    }
+
+    private void InitializeCharacters()
+    {
         player = playerScene.Instantiate<Character>();
         enemy = enemyScene.Instantiate<Character>();
         playerNode.AddChild(player);
         player.GlobalPosition = playerNode.GlobalPosition;
         enemyNode.AddChild(enemy);
         enemy.GlobalPosition = enemyNode.GlobalPosition;
+        player.StartingPosition = playerNode.GlobalPosition;
+        enemy.StartingPosition = enemyNode.GlobalPosition;
 
- 
-        SetActiveCharacter(player);
-        
-        state = State.WaitingForPlayer;
-        InitializeHealthBars();
-    }
-
-    private void InitializeHealthBars()
-    {
         player.Health = player.GetMaxHealthAmount();
-        player.Strength = 2;
+        player.Strength = 90;
         player.Defense = 2;
         player.Speed = 2;
 
         enemy.Health = enemy.GetMaxHealthAmount();
-        enemy.Strength = 2;
+        enemy.Strength = 90;
         enemy.Defense = 2;
         enemy.Speed = 2;
 
@@ -73,6 +108,7 @@ public partial class TurnManager : Node
         playerhealth.Value = player.GetHealthAmount();
         enemyhealth.MaxValue = enemy.GetMaxHealthAmount();
         enemyhealth.Value = enemy.GetHealthAmount();
+
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -141,6 +177,7 @@ public partial class TurnManager : Node
 
         if (activeCharacter == player)
         {
+            SetActiveCharacter(enemy);
             state = State.Busy;
             playerAction = new Random().Next(0, 1) == 0 ? PlayerAction.Attacked : PlayerAction.Defended;
             enemy.Attack(player, () =>
@@ -151,6 +188,8 @@ public partial class TurnManager : Node
         }
         else
         {
+            isPlayerTurn = false;
+            SetActiveCharacter(player);
             state = State.WaitingForPlayer;
         }
     }
@@ -159,11 +198,17 @@ public partial class TurnManager : Node
     {
         if (player.IsDead())
         {
+            GD.Print("player is dead");
+            //show a card with the question mark. so player can click on it.
+            //enable the next arrow for next fight
             return true;
         }
 
         if (enemy.IsDead())
         {
+            enemy.QueueFree();
+            randomCard.Visible = true;
+            GD.Print("enemy is dead");
             return true;
         }
 
@@ -190,21 +235,25 @@ public partial class TurnManager : Node
     private void OnPlayerDefend()
     {
         playerAction = PlayerAction.Defended;
+        isPlayerTurn = true;
     }
 
     private void OnPlayerUseCard1()
     {
         playerAction = PlayerAction.UseCard1;
+        isPlayerTurn = true;
     }
 
     private void OnPlayerUseCard2()
     {
         playerAction = PlayerAction.UseCard2;
+        isPlayerTurn = true;
     }
 
     private void OnPlayerUseCard3()
     {
         playerAction = PlayerAction.UseCard3;
+        isPlayerTurn = true;
     }
 
     private List<Character> characters = new List<Character>();

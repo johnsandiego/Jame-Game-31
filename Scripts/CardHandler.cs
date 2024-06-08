@@ -3,14 +3,7 @@ using System;
 
 public partial class CardHandler : Node
 {
-	private enum CardType
-	{
-		slime = 0,
-		skeleton = 1,
-		goblin = 2,
-		troll = 3,
-		vampire = 4
-	}
+
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()

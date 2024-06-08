@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dn5tp23nok6n5"
-path="res://.godot/imported/Kael.png-ab2905d8ca562fc15743e25a8ddcf7cb.ctex"
+uid="uid://cpx3edh3gg2c8"
+path="res://.godot/imported/slime.png-44567d1ba3ebdbac1e5a191593b0b118.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Kael.png"
-dest_files=["res://.godot/imported/Kael.png-ab2905d8ca562fc15743e25a8ddcf7cb.ctex"]
+source_file="res://assets/slime.png"
+dest_files=["res://.godot/imported/slime.png-44567d1ba3ebdbac1e5a191593b0b118.ctex"]
 
 [params]
 

@@ -1,21 +1,22 @@
 [gd_scene load_steps=8 format=3 uid="uid://b5wi4l7moykw4"]
 
 [ext_resource type="Script" path="res://Scripts/TurnManager.cs" id="1_61iyt"]
-[ext_resource type="Texture2D" uid="uid://dn5tp23nok6n5" path="res://Kael.png" id="1_oxy4p"]
 [ext_resource type="Theme" uid="uid://v0w1j5qmmhmj" path="res://new_theme.tres" id="2_ixn37"]
-[ext_resource type="Texture2D" uid="uid://cpx3edh3gg2c8" path="res://slime.png" id="2_uyj3a"]
 [ext_resource type="Theme" uid="uid://b23kdxlonntwv" path="res://card.tres" id="3_3x3yj"]
 [ext_resource type="Texture2D" uid="uid://b66ahwjb5jg1i" path="res://PlayerPlatform.png" id="3_imr46"]
-[ext_resource type="Texture2D" uid="uid://71i0vhatugs7" path="res://background.png" id="5_1o4kh"]
+[ext_resource type="PackedScene" uid="uid://cakygaj3dj6jh" path="res://Scene/RandomCard.tscn" id="4_mehvv"]
+[ext_resource type="PackedScene" uid="uid://ctahk88q1msxw" path="res://Scene/Card.tscn" id="4_p2nxv"]
+[ext_resource type="Texture2D" uid="uid://71i0vhatugs7" path="res://assets/background.png" id="5_1o4kh"]
 
-[node name="CombatScene" type="Node2D" node_paths=PackedStringArray("playerNode", "enemyNode", "playerhealth", "enemyhealth")]
+[node name="CombatScene" type="Node2D" node_paths=PackedStringArray("enemyNode", "playerNode", "playerhealth", "enemyhealth", "randomCard")]
 z_index = -1
 position = Vector2(-8, 4)
 script = ExtResource("1_61iyt")
-playerNode = NodePath("PlayerArea")
 enemyNode = NodePath("EnemyArea")
+playerNode = NodePath("PlayerArea")
 playerhealth = NodePath("CanvasLayer/HealthBars/HBoxContainer/Control/ProgressBar")
 enemyhealth = NodePath("CanvasLayer/HealthBars/HBoxContainer/Control2/ProgressBar")
+randomCard = NodePath("CanvasLayer/BackgroundOverlay")
 
 [node name="PlayerArea" type="Node2D" parent="."]
 z_index = 2
@@ -45,35 +46,60 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("3_3x3yj")
 
-[node name="Button" type="Button" parent="CanvasLayer/CardContainer/HBoxContainer/Panel"]
-layout_mode = 0
+[node name="CardPosition" type="Control" parent="CanvasLayer/CardContainer/HBoxContainer/Panel"]
+anchors_preset = 0
+offset_top = 2.0
 offset_right = 174.0
-offset_bottom = 263.0
-text = "no card equipt"
+offset_bottom = 265.0
+
+[node name="Card" parent="CanvasLayer/CardContainer/HBoxContainer/Panel/CardPosition" instance=ExtResource("4_p2nxv")]
+visible = false
+layout_mode = 1
+offset_left = -119.0
+offset_top = -119.5
+offset_right = 905.0
+offset_bottom = 904.5
+scale = Vector2(0.235, 0.235)
 
 [node name="Panel2" type="Panel" parent="CanvasLayer/CardContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("3_3x3yj")
 
-[node name="Button2" type="Button" parent="CanvasLayer/CardContainer/HBoxContainer/Panel2"]
-layout_mode = 0
+[node name="CardPosition2" type="Control" parent="CanvasLayer/CardContainer/HBoxContainer/Panel2"]
+anchors_preset = 0
 offset_top = 2.0
 offset_right = 174.0
 offset_bottom = 265.0
-text = "no card equipt"
+
+[node name="Card2" parent="CanvasLayer/CardContainer/HBoxContainer/Panel2/CardPosition2" instance=ExtResource("4_p2nxv")]
+visible = false
+layout_mode = 1
+offset_left = -119.0
+offset_top = -121.5
+offset_right = 905.0
+offset_bottom = 902.5
+scale = Vector2(0.235, 0.235)
 
 [node name="Panel3" type="Panel" parent="CanvasLayer/CardContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("3_3x3yj")
 
-[node name="Button3" type="Button" parent="CanvasLayer/CardContainer/HBoxContainer/Panel3"]
-layout_mode = 0
+[node name="CardPosition3" type="Control" parent="CanvasLayer/CardContainer/HBoxContainer/Panel3"]
+anchors_preset = 0
 offset_top = 2.0
 offset_right = 174.0
 offset_bottom = 265.0
-text = "no card equipt"
+
+[node name="Card3" parent="CanvasLayer/CardContainer/HBoxContainer/Panel3/CardPosition3" instance=ExtResource("4_p2nxv")]
+visible = false
+layout_mode = 1
+offset_left = -121.0
+offset_top = -121.5
+offset_right = 903.0
+offset_bottom = 902.5
+scale = Vector2(0.235, 0.235)
 
 [node name="PlayerMoves" type="Panel" parent="CanvasLayer"]
 offset_left = 554.0
@@ -92,7 +118,7 @@ offset_bottom = 278.0
 [node name="Slash" type="Button" parent="CanvasLayer/PlayerMoves/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Slash"
+text = "Hit"
 
 [node name="Defend" type="Button" parent="CanvasLayer/PlayerMoves/VBoxContainer"]
 layout_mode = 2
@@ -120,6 +146,7 @@ text = "Menu"
 [node name="HealthBars" type="Panel" parent="CanvasLayer"]
 offset_right = 1150.0
 offset_bottom = 37.0
+theme = ExtResource("2_ixn37")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/HealthBars"]
 layout_mode = 0
@@ -162,28 +189,24 @@ offset_left = 61.0
 offset_right = 573.0
 offset_bottom = 37.0
 
-[node name="Kael" type="Sprite2D" parent="."]
+[node name="BackgroundOverlay" type="Panel" parent="CanvasLayer"]
 visible = false
-z_index = 2
-position = Vector2(292, 202)
-scale = Vector2(0.281201, 0.230024)
-texture = ExtResource("1_oxy4p")
+offset_left = 1.0
+offset_top = 39.0
+offset_right = 1150.0
+offset_bottom = 648.0
 
-[node name="Slime" type="Sprite2D" parent="."]
-visible = false
-z_index = 2
-position = Vector2(904, 258)
-scale = Vector2(3.78125, 3.54167)
-texture = ExtResource("2_uyj3a")
-flip_h = true
-region_enabled = true
-region_rect = Rect2(8, 12, 16, 12)
+[node name="RandomCard" parent="CanvasLayer/BackgroundOverlay" instance=ExtResource("4_mehvv")]
+offset_left = -1.0
+offset_top = -39.0
+offset_right = -1.0
+offset_bottom = -39.0
 
 [node name="PlayerPlatform" type="Sprite2D" parent="."]
 visible = false
 modulate = Color(0.997529, 0.954292, 0.99247, 1)
 z_index = 1
-position = Vector2(303, 273)
+position = Vector2(250, 275)
 scale = Vector2(0.475, 0.393333)
 texture = ExtResource("3_imr46")
 
@@ -195,13 +218,12 @@ scale = Vector2(0.475, 0.393333)
 texture = ExtResource("3_imr46")
 
 [node name="Background" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(577, 107)
 scale = Vector2(0.655134, 0.683594)
 texture = ExtResource("5_1o4kh")
 
-[connection signal="pressed" from="CanvasLayer/CardContainer/HBoxContainer/Panel/Button" to="." method="OnPlayerUseCard1"]
-[connection signal="pressed" from="CanvasLayer/CardContainer/HBoxContainer/Panel2/Button2" to="." method="OnPlayerUseCard2"]
-[connection signal="pressed" from="CanvasLayer/CardContainer/HBoxContainer/Panel3/Button3" to="." method="OnPlayerUseCard3"]
+[connection signal="pressed" from="CanvasLayer/CardContainer/HBoxContainer/Panel/CardPosition/Card" to="." method="OnPlayerUseCard1"]
+[connection signal="pressed" from="CanvasLayer/CardContainer/HBoxContainer/Panel2/CardPosition2/Card2" to="." method="OnPlayerUseCard2"]
+[connection signal="pressed" from="CanvasLayer/CardContainer/HBoxContainer/Panel3/CardPosition3/Card3" to="." method="OnPlayerUseCard3"]
 [connection signal="pressed" from="CanvasLayer/PlayerMoves/VBoxContainer/Slash" to="." method="OnSlashPressed"]
 [connection signal="pressed" from="CanvasLayer/PlayerMoves/VBoxContainer/Defend" to="." method="OnPlayerDefend"]
