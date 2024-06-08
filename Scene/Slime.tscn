@@ -1,0 +1,105 @@
+[gd_scene load_steps=9 format=3 uid="uid://ch3x68i4gmivn"]
+
+[ext_resource type="Script" path="res://Scripts/Character.cs" id="1_vrsnc"]
+[ext_resource type="Texture2D" uid="uid://cpx3edh3gg2c8" path="res://slime.png" id="2_ys0ba"]
+
+[sub_resource type="Animation" id="Animation_jnaiv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Slime:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Slime:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_bmh24"]
+resource_name = "attack"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Slime:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-10, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_gtu0n"]
+resource_name = "idle"
+length = 2.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Slime:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1.05), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0aiv0"]
+_data = {
+"RESET": SubResource("Animation_jnaiv"),
+"attack": SubResource("Animation_bmh24"),
+"idle": SubResource("Animation_gtu0n")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6dqx1"]
+radius = 9.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ia6y0"]
+
+[node name="Slime" type="CharacterBody2D" node_paths=PackedStringArray("animPlayer")]
+scale = Vector2(4, 4)
+collision_layer = 2
+script = ExtResource("1_vrsnc")
+animPlayer = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_0aiv0")
+}
+
+[node name="Slime" type="Sprite2D" parent="."]
+texture = ExtResource("2_ys0ba")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(8, 12, 16, 12)
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource("CircleShape2D_6dqx1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ia6y0")
+
+[connection signal="body_entered" from="HitBox" to="." method="OnEnemyBodyEntered"]

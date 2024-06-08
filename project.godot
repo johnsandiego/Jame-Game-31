@@ -11,12 +11,18 @@ config_version=5
 [application]
 
 config/name="Jame-game-31"
-config/features=PackedStringArray("4.2", "GL Compatibility")
+run/main_scene="res://Scene/CombatScene.tscn"
+config/features=PackedStringArray("4.2", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [dotnet]
 
 project/assembly_name="Jame-game-31"
+
+[layer_names]
+
+2d_physics/layer_1="player"
+2d_physics/layer_2="enemy"
 
 [rendering]
 
