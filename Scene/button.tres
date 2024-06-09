@@ -1,0 +1,4 @@
+[gd_resource type="Theme" format=3 uid="uid://b3tapjlgxruwc"]
+
+[resource]
+Button/colors/icon_normal_color = Color(0.964742, 0.964742, 0.964742, 1)

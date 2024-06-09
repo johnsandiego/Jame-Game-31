@@ -33,7 +33,7 @@ public partial class Projectile : CharacterBody2D
     public void OnBodyEntered()
     {
         GD.Print("projectile hit something");
-        QueueFree();
+        //QueueFree();
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.

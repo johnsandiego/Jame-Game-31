@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://bx2crijc2rbt1"]
 
 [ext_resource type="Theme" uid="uid://v0w1j5qmmhmj" path="res://new_theme.tres" id="1_lb80y"]
-[ext_resource type="Script" path="res://Scene/IntroScreen.cs" id="1_ng84e"]
+[ext_resource type="Script" path="res://Scripts/IntroScreen.cs" id="1_ng84e"]
 [ext_resource type="PackedScene" uid="uid://dbsdmq5dna7iy" path="res://Scene/rolling_text_label.tscn" id="2_t3wou"]
 [ext_resource type="Theme" uid="uid://jx42x5etamg" path="res://Scene/introscreen.tres" id="4_sk13x"]
 [ext_resource type="Texture2D" uid="uid://cceb64jwawxxa" path="res://assets/truck-kun.png" id="5_cqiv4"]
@@ -75,6 +75,7 @@ theme = ExtResource("1_lb80y")
 layout_mode = 0
 offset_left = 105.0
 offset_top = 214.0
+offset_right = 1055.0
 offset_bottom = 424.0
 theme = ExtResource("4_sk13x")
 
@@ -86,6 +87,15 @@ offset_right = 1151.0
 offset_bottom = 536.0
 texture = ExtResource("5_cqiv4")
 expand_mode = 2
+
+[node name="RollingTextLabel2" parent="Panel" node_paths=PackedStringArray("audio") instance=ExtResource("2_t3wou")]
+layout_mode = 0
+offset_left = 105.0
+offset_top = 214.0
+offset_right = 1055.0
+offset_bottom = 424.0
+theme = ExtResource("4_sk13x")
+audio = NodePath("../RollingTextLabel/AudioStreamPlayer2D")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

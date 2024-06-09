@@ -1,0 +1,102 @@
+[gd_scene load_steps=8 format=3 uid="uid://4g7vqxq7f86g"]
+
+[ext_resource type="Script" path="res://Scripts/BoneThrow.cs" id="1_b5av0"]
+[ext_resource type="Texture2D" uid="uid://fnj8mixucmde" path="res://assets/skills/bone.png" id="1_d0ct3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_csshi"]
+size = Vector2(136.123, 52.0442)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2knyj"]
+size = Vector2(136.472, 48.0833)
+
+[sub_resource type="Animation" id="Animation_fmvgo"]
+resource_name = "spin"
+length = 2.0
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 6.28319, 12.5664, 18.8496, 25.1327]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HitBox:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 6.28319, 12.5664, 18.8496, 25.1327]
+}
+
+[sub_resource type="Animation" id="Animation_5rxiu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HitBox:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_n00i5"]
+_data = {
+"RESET": SubResource("Animation_5rxiu"),
+"spin": SubResource("Animation_fmvgo")
+}
+
+[node name="BoneThrow" type="CharacterBody2D" node_paths=PackedStringArray("anim")]
+script = ExtResource("1_b5av0")
+anim = NodePath("AnimationPlayer")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.413333, 0.413333)
+texture = ExtResource("1_d0ct3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.9414, 0.140342)
+rotation = 0.71733
+shape = SubResource("RectangleShape2D_csshi")
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(2.75, -0.25)
+rotation = 0.785398
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_2knyj")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_n00i5")
+}
+
+[connection signal="body_entered" from="HitBox" to="." method="OnBodyEntered"]

@@ -8,7 +8,7 @@
 [ext_resource type="Theme" uid="uid://c2r7boss2uppr" path="res://Carddescription.tres" id="4_u5ohe"]
 [ext_resource type="PackedScene" uid="uid://ctahk88q1msxw" path="res://Scene/Card.tscn" id="4_xs8ud"]
 
-[node name="RandomCard" type="Control" node_paths=PackedStringArray("UnknownCard", "CardNoHover", "NoCard", "controls")]
+[node name="RandomCard" type="Control" node_paths=PackedStringArray("UnknownCard", "CardNoHover", "NoCard", "controls", "replaceContainer")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_xv5s3")
@@ -16,6 +16,7 @@ UnknownCard = NodePath("UnknownCard")
 CardNoHover = NodePath("CardNoHover")
 NoCard = NodePath("NoCard")
 controls = NodePath("Controls")
+replaceContainer = NodePath("HBoxContainer")
 
 [node name="UnknownCard" type="TextureButton" parent="."]
 layout_mode = 0
@@ -71,31 +72,30 @@ autowrap_mode = 2
 [node name="Card" parent="." instance=ExtResource("4_xs8ud")]
 visible = false
 layout_mode = 0
-offset_left = 269.0
+offset_left = 359.0
 offset_top = 66.0
-offset_right = 1293.0
-offset_bottom = 1090.0
+offset_right = 799.0
+offset_bottom = 705.0
 scale = Vector2(0.857038, 0.857038)
 
 [node name="CardNoHover" parent="." instance=ExtResource("4_xs8ud")]
 visible = false
 layout_mode = 0
-offset_left = 265.0
+offset_left = 359.0
 offset_top = 66.0
-offset_right = 1289.0
-offset_bottom = 1090.0
+offset_right = 798.0
+offset_bottom = 702.0
 scale = Vector2(0.863306, 0.863306)
 
 [node name="Card" parent="CardNoHover" index="0"]
 texture_hover = null
 
 [node name="Controls" type="VBoxContainer" parent="."]
-visible = false
 layout_mode = 0
 offset_left = 738.0
-offset_top = 497.0
+offset_top = 423.0
 offset_right = 890.0
-offset_bottom = 627.0
+offset_bottom = 620.0
 
 [node name="Equip" type="Button" parent="Controls"]
 layout_mode = 2
@@ -103,15 +103,49 @@ size_flags_vertical = 3
 theme = ExtResource("3_whih2")
 text = "Equip"
 
+[node name="Replace" type="Button" parent="Controls"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("3_whih2")
+text = "Replace"
+
 [node name="Discard" type="Button" parent="Controls"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("3_whih2")
 text = "Discard"
 
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 213.0
+offset_top = 157.0
+offset_right = 924.0
+offset_bottom = 395.0
+
+[node name="Button" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_whih2")
+text = "First"
+
+[node name="Button2" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_whih2")
+text = "Second"
+
+[node name="Button3" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_whih2")
+text = "Third"
+
 [connection signal="pressed" from="UnknownCard" to="." method="OnUnknownCardPressed"]
 [connection signal="pressed" from="NoCard" to="." method="OnUnknownCardPressed"]
 [connection signal="pressed" from="Controls/Equip" to="." method="OnEquip"]
+[connection signal="pressed" from="Controls/Replace" to="." method="OnReplace"]
 [connection signal="pressed" from="Controls/Discard" to="." method="OnDiscard"]
 
 [editable path="Card"]

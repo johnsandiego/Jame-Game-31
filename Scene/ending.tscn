@@ -1,0 +1,116 @@
+[gd_scene load_steps=9 format=3 uid="uid://cg7xeana7ovsi"]
+
+[ext_resource type="Script" path="res://Ending.cs" id="1_7s6or"]
+[ext_resource type="PackedScene" uid="uid://dbsdmq5dna7iy" path="res://Scene/rolling_text_label.tscn" id="2_sc2cj"]
+[ext_resource type="Shader" path="res://Shader/HitFlash.gdshader" id="3_xasrl"]
+[ext_resource type="Theme" uid="uid://v0w1j5qmmhmj" path="res://new_theme.tres" id="4_qsa18"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ctv8v"]
+shader = ExtResource("3_xasrl")
+shader_parameter/enabled = false
+shader_parameter/tint = Color(1, 1, 1, 1)
+
+[sub_resource type="Animation" id="Animation_o2s22"]
+resource_name = "white"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Panel:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="Animation_vkuev"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Panel:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bjge2"]
+_data = {
+"RESET": SubResource("Animation_vkuev"),
+"white": SubResource("Animation_o2s22")
+}
+
+[node name="Ending" type="Control" node_paths=PackedStringArray("text", "label", "panel", "anim", "newgame", "closegame")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7s6or")
+text = NodePath("RollingTextLabel")
+label = NodePath("Panel/Thanks")
+panel = NodePath("Panel")
+anim = NodePath("AnimationPlayer")
+newgame = NodePath("Button")
+closegame = NodePath("Button2")
+
+[node name="Panel2" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 1151.0
+offset_bottom = 648.0
+theme = ExtResource("4_qsa18")
+
+[node name="RollingTextLabel" parent="." instance=ExtResource("2_sc2cj")]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 200.0
+offset_right = 1096.0
+offset_bottom = 410.0
+
+[node name="Panel" type="Panel" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_ctv8v")
+layout_mode = 0
+offset_right = 1151.0
+offset_bottom = 648.0
+
+[node name="Thanks" parent="Panel" node_paths=PackedStringArray("audio") instance=ExtResource("2_sc2cj")]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 200.0
+offset_right = 1096.0
+offset_bottom = 410.0
+audio = NodePath("../../RollingTextLabel/AudioStreamPlayer2D")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_bjge2")
+}
+
+[node name="Button" type="Button" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 303.0
+offset_top = 410.0
+offset_right = 470.0
+offset_bottom = 478.0
+text = "New Game"
+
+[node name="Button2" type="Button" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 631.0
+offset_top = 410.0
+offset_right = 798.0
+offset_bottom = 478.0
+text = "Quit"
+
+[connection signal="pressed" from="Button" to="." method="OnNewGame"]
+[connection signal="pressed" from="Button2" to="." method="OnQuit"]

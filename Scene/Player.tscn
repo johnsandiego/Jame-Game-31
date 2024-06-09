@@ -1,9 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://c02eo3gih1mh4"]
+[gd_scene load_steps=17 format=3 uid="uid://c02eo3gih1mh4"]
 
 [ext_resource type="Script" path="res://Scripts/Character.cs" id="1_8tlqv"]
 [ext_resource type="Shader" path="res://Shader/HitFlash.gdshader" id="2_th0vb"]
 [ext_resource type="Texture2D" uid="uid://bj8oyyycsum3s" path="res://assets/OfficeWorker.png" id="3_ua1hp"]
 [ext_resource type="Texture2D" uid="uid://dmgnh1keirqys" path="res://assets/DeadPlayer.png" id="4_dxupv"]
+[ext_resource type="AudioStream" uid="uid://dj88eqymfbwee" path="res://assets/ouch.mp3" id="5_lopb1"]
+[ext_resource type="AudioStream" uid="uid://g5jk0d3eypt8" path="res://assets/hit.mp3" id="6_4cy26"]
 
 [sub_resource type="Animation" id="Animation_opgj1"]
 length = 0.001
@@ -220,13 +222,15 @@ height = 640.0
 radius = 300.0
 height = 740.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animPlayer", "deadPlayer", "regularPlayer")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animPlayer", "deadPlayer", "regularPlayer", "ouch", "hit")]
 scale = Vector2(0.3, 0.3)
 collision_mask = 8
 script = ExtResource("1_8tlqv")
 animPlayer = NodePath("AnimationPlayer")
 deadPlayer = NodePath("deadSprite")
 regularPlayer = NodePath("regularPlayer")
+ouch = NodePath("AudioStreamPlayer2D")
+hit = NodePath("AudioStreamPlayer2D2")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -263,6 +267,12 @@ position = Vector2(6.66666, -26.6667)
 scale = Vector2(0.883333, 0.883333)
 texture = ExtResource("4_dxupv")
 flip_h = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_lopb1")
+
+[node name="AudioStreamPlayer2D2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_4cy26")
 
 [connection signal="body_entered" from="HitBox" to="." method="OnBodyEntered"]
 [connection signal="body_entered" from="HurtBox" to="." method="OnHurtBoxEntered"]

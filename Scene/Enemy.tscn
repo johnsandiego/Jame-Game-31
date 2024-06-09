@@ -1,12 +1,15 @@
-[gd_scene load_steps=20 format=3 uid="uid://ch3x68i4gmivn"]
+[gd_scene load_steps=23 format=3 uid="uid://ch3x68i4gmivn"]
 
 [ext_resource type="Script" path="res://Scripts/Character.cs" id="1_8bcsk"]
 [ext_resource type="Shader" path="res://Shader/HitFlash.gdshader" id="2_1m427"]
 [ext_resource type="Texture2D" uid="uid://cpx3edh3gg2c8" path="res://assets/slime.png" id="3_0blb0"]
-[ext_resource type="Texture2D" uid="uid://dv2du24jsb21n" path="res://assets/slime_green.png" id="4_cwflx"]
-[ext_resource type="Texture2D" uid="uid://ddqkbe2xmv2g8" path="res://assets/slime2.png" id="4_n0075"]
+[ext_resource type="Texture2D" uid="uid://duyavw5ucuf88" path="res://assets/goblin.png" id="4_4ytbn"]
+[ext_resource type="Texture2D" uid="uid://ruohvpe8oitm" path="res://assets/skills/troll.png" id="5_n0d61"]
 [ext_resource type="Texture2D" uid="uid://dnrl3prk82u3s" path="res://assets/skeleton-ready.png" id="6_hal6c"]
 [ext_resource type="Texture2D" uid="uid://ivv0enxigv7w" path="res://assets/vampire.png" id="7_882q1"]
+[ext_resource type="Texture2D" uid="uid://bpd0k5nxsrhvt" path="res://assets/truck-kun-boss.png" id="8_6fsnu"]
+[ext_resource type="AudioStream" uid="uid://g5jk0d3eypt8" path="res://assets/hit.mp3" id="9_gq0ik"]
+[ext_resource type="AudioStream" uid="uid://dfwkvoix5a53y" path="res://assets/hit2.mp3" id="10_eusjo"]
 
 [sub_resource type="Animation" id="Animation_jnaiv"]
 length = 0.001
@@ -130,6 +133,42 @@ tracks/9/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Truck-kun:position")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(14.25, -8.5)]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Vampire:position")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(3.25, -10.25)]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("Skeleton:position")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(6.5, -6.75)]
+}
 
 [sub_resource type="Animation" id="Animation_bmh24"]
 resource_name = "attack"
@@ -181,7 +220,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(-50, 0), Vector2(0, 0)]
+"values": [Vector2(6, -8.75), Vector2(-44.5, -7.5), Vector2(6.25, -8.25)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -193,7 +232,43 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 2), Vector2(-50.935, 2), Vector2(0, 2)]
+"values": [Vector2(3.5, -2.25), Vector2(-47.75, -2.25), Vector2(2.75, -2)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Truck-kun:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(14.25, -8.5), Vector2(-35.37, -8.5), Vector2(15.21, -8.5)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Vampire:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(3.25, -10.25), Vector2(-43.5, -10.75), Vector2(5.75, -9.75)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Skeleton:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(6.5, -6.75), Vector2(-42.745, -6.75), Vector2(6.5, -6.75)]
 }
 
 [sub_resource type="Animation" id="Animation_umxq1"]
@@ -297,12 +372,13 @@ shader_parameter/tint = Color(1, 1, 1, 1)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hfstf"]
 size = Vector2(31.5, 35.5)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_6dqx1"]
-radius = 9.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8qrfd"]
+size = Vector2(31.25, 35)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_jijqg"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_opqus"]
+size = Vector2(31, 35.5)
 
-[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("animPlayer", "slimeSprite", "slimeSprite2", "slimeSprite3", "skeletonSprite", "vampireSprite")]
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("animPlayer", "slimeSprite", "slimeSprite2", "slimeSprite3", "skeletonSprite", "vampireSprite", "truckkunSprite", "hit")]
 scale = Vector2(4, 4)
 collision_layer = 2
 collision_mask = 5
@@ -313,6 +389,8 @@ slimeSprite2 = NodePath("Slime2")
 slimeSprite3 = NodePath("Slime3")
 skeletonSprite = NodePath("Skeleton")
 vampireSprite = NodePath("Vampire")
+truckkunSprite = NodePath("Truck-kun")
+hit = NodePath("AudioStreamPlayer2D")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -331,15 +409,15 @@ region_rect = Rect2(8, 12, 16, 12)
 visible = false
 material = SubResource("ShaderMaterial_rqtox")
 position = Vector2(-0.250004, 2)
-scale = Vector2(0.07825, 0.0558929)
-texture = ExtResource("4_n0075")
+scale = Vector2(0.122875, 0.117946)
+texture = ExtResource("4_4ytbn")
 
 [node name="Slime3" type="Sprite2D" parent="."]
 visible = false
 material = SubResource("ShaderMaterial_8as0t")
-texture = ExtResource("4_cwflx")
+scale = Vector2(0.1625, 0.18125)
+texture = ExtResource("5_n0d61")
 flip_h = true
-region_enabled = true
 region_rect = Rect2(53, 33, 14, 15)
 
 [node name="Skeleton" type="Sprite2D" parent="."]
@@ -353,9 +431,17 @@ region_rect = Rect2(53, 33, 14, 15)
 [node name="Vampire" type="Sprite2D" parent="."]
 visible = false
 material = SubResource("ShaderMaterial_fgsav")
-position = Vector2(9.75, -9)
+position = Vector2(3.25, -10.25)
 scale = Vector2(0.110758, 0.100812)
 texture = ExtResource("7_882q1")
+region_rect = Rect2(53, 33, 14, 15)
+
+[node name="Truck-kun" type="Sprite2D" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_fgsav")
+position = Vector2(14.25, -8.5)
+scale = Vector2(0.31125, 0.31307)
+texture = ExtResource("8_6fsnu")
 region_rect = Rect2(53, 33, 14, 15)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -366,14 +452,22 @@ shape = SubResource("RectangleShape2D_hfstf")
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
-shape = SubResource("CircleShape2D_6dqx1")
+position = Vector2(5.625, -7.5)
+shape = SubResource("RectangleShape2D_8qrfd")
 
 [node name="HurtBox" type="Area2D" parent="."]
 collision_layer = 8
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
-shape = SubResource("CircleShape2D_jijqg")
+position = Vector2(5.5, -7.75)
+shape = SubResource("RectangleShape2D_opqus")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_gq0ik")
+
+[node name="AudioStreamPlayer2D2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_eusjo")
 
 [connection signal="body_entered" from="HitBox" to="." method="OnEnemyBodyEntered"]
 [connection signal="body_entered" from="HurtBox" to="." method="OnEnemyHurtBoxEntered"]

@@ -1,5 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://ctahk88q1msxw"]
+[gd_scene load_steps=13 format=3 uid="uid://ctahk88q1msxw"]
 
+[ext_resource type="Theme" uid="uid://b3tapjlgxruwc" path="res://Scene/button.tres" id="1_twvx5"]
 [ext_resource type="Texture2D" uid="uid://dq3d3ri4ixhr" path="res://assets/Cardtemplate.png" id="1_usdyg"]
 [ext_resource type="Texture2D" uid="uid://bssbox1o2wm7l" path="res://assets/CardtemplateClicked.png" id="2_0jubh"]
 [ext_resource type="Texture2D" uid="uid://3fa2yo2if4f5" path="res://assets/CardtemplateHover.png" id="3_mp7tk"]
@@ -13,8 +14,9 @@
 [ext_resource type="Texture2D" uid="uid://cnuwy3h2kjxv2" path="res://assets/skills/bloodspike.png" id="9_irjea"]
 
 [node name="Control" type="Button" node_paths=PackedStringArray("SlimeTextureRect", "BoneTextureRect", "AcidTextureRect", "HealTextureRect", "BloodSpikeTextureRect", "Title", "Description")]
-offset_right = 650.0
+offset_right = 442.0
 offset_bottom = 648.0
+theme = ExtResource("1_twvx5")
 script = ExtResource("4_4k55b")
 SlimeTextureRect = NodePath("Slime")
 BoneTextureRect = NodePath("Bone")
@@ -27,7 +29,8 @@ Description = NodePath("Description")
 [node name="Card" type="TextureButton" parent="."]
 clip_contents = true
 layout_mode = 1
-offset_right = 1024.0
+offset_left = -102.0
+offset_right = 922.0
 offset_bottom = 1024.0
 scale = Vector2(0.633, 0.633)
 texture_normal = ExtResource("1_usdyg")
@@ -37,9 +40,9 @@ texture_hover = ExtResource("3_mp7tk")
 [node name="Slime" type="TextureRect" parent="."]
 visible = false
 layout_mode = 0
-offset_left = 204.0
+offset_left = 102.0
 offset_top = 133.0
-offset_right = 431.0
+offset_right = 329.0
 offset_bottom = 363.0
 texture = ExtResource("4_g8f5p")
 expand_mode = 1
@@ -48,9 +51,9 @@ flip_h = true
 [node name="Bone" type="TextureRect" parent="."]
 visible = false
 layout_mode = 0
-offset_left = 204.0
+offset_left = 102.0
 offset_top = 133.0
-offset_right = 431.0
+offset_right = 329.0
 offset_bottom = 363.0
 texture = ExtResource("6_lwx7i")
 expand_mode = 1
@@ -59,9 +62,9 @@ flip_h = true
 [node name="Acid" type="TextureRect" parent="."]
 visible = false
 layout_mode = 0
-offset_left = 204.0
+offset_left = 102.0
 offset_top = 133.0
-offset_right = 431.0
+offset_right = 329.0
 offset_bottom = 363.0
 texture = ExtResource("7_htiy1")
 expand_mode = 1
@@ -70,9 +73,9 @@ flip_h = true
 [node name="Heal" type="TextureRect" parent="."]
 visible = false
 layout_mode = 0
-offset_left = 204.0
+offset_left = 102.0
 offset_top = 133.0
-offset_right = 431.0
+offset_right = 329.0
 offset_bottom = 363.0
 texture = ExtResource("8_sirhl")
 expand_mode = 1
@@ -81,9 +84,9 @@ flip_h = true
 [node name="BloodSpike" type="TextureRect" parent="."]
 visible = false
 layout_mode = 0
-offset_left = 204.0
+offset_left = 102.0
 offset_top = 133.0
-offset_right = 431.0
+offset_right = 329.0
 offset_bottom = 363.0
 texture = ExtResource("9_irjea")
 expand_mode = 1
@@ -91,17 +94,17 @@ flip_h = true
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 0
-offset_left = 200.0
+offset_left = 100.0
 offset_top = 33.0
-offset_right = 479.0
+offset_right = 379.0
 offset_bottom = 91.0
 theme = ExtResource("3_t0wxk")
 
 [node name="Description" type="Label" parent="."]
 layout_mode = 0
-offset_left = 143.0
-offset_top = 436.0
-offset_right = 491.0
-offset_bottom = 611.0
+offset_left = 50.0
+offset_top = 434.0
+offset_right = 398.0
+offset_bottom = 609.0
 theme = ExtResource("4_8txpj")
 autowrap_mode = 2

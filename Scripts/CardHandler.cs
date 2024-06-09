@@ -22,7 +22,8 @@ public partial class CardHandler : Button
 	public Label Title { get; set; }
 	[Export]
 	public Label Description { get; set; }
-
+    public CardType CardType { get; set; }
+    public int Damage { get; set; }
 	public CompressedTexture2D CompressedTexture { get; set; }
 
 	// Called when the node enters the scene tree for the first time.
@@ -31,17 +32,18 @@ public partial class CardHandler : Button
 		//InitializeCard("Sticky Slime", "Launches a sticky liquid which has a chance of slowing the target", CardType.slime);
 
     }
-	
-	public CardHandler InitializeCard(string title, string description, CardType cardType)
-	{
+
+    public CardHandler InitializeCard(string title, string description, CardType cardType)
+    {
         switch (cardType)
         {
             case CardType.slime:
 
                 Title.Text = title;
                 Description.Text = description;
-				SlimeTextureRect.Visible = true;
-                
+                SetTextureTrue(cardType);
+                Damage = 10;
+                CardType = cardType;
                 //later apply texture of card
                 // apply title and description
                 break;
@@ -49,29 +51,85 @@ public partial class CardHandler : Button
 
                 Title.Text = title;
                 Description.Text = description;
-                SlimeTextureRect.Visible = true;
+                SetTextureTrue(cardType);
+                CardType = cardType;
+                Damage = 20;
                 break;
             case CardType.goblin:
 
                 Title.Text = title;
                 Description.Text = description;
-                SlimeTextureRect.Visible = true;
+                SetTextureTrue(cardType);
+                CardType = cardType;
+                Damage = 30;
                 break;
             case CardType.troll:
 
                 Title.Text = title;
                 Description.Text = description;
-                SlimeTextureRect.Visible = true;
+                SetTextureTrue(cardType);
+                CardType = cardType;
+                Damage = 50;
                 break;
             case CardType.vampire:
 
                 Title.Text = title;
                 Description.Text = description;
-                SlimeTextureRect.Visible = true;
+                SetTextureTrue(cardType);
+                CardType = cardType;
+                Damage = 80;
                 break;
         }
         return this;
 
+    }
+
+    private void SetTextureTrue(CardType cardType)
+    {
+        switch (cardType)
+        {
+            case CardType.slime:
+
+                SlimeTextureRect.Visible = true;
+                BoneTextureRect.Visible = false;
+                AcidTextureRect.Visible = false;
+                HealTextureRect.Visible = false;
+                BloodSpikeTextureRect.Visible = false;
+                // apply title and description
+                break;
+            case CardType.skeleton:
+                SlimeTextureRect.Visible = false;
+                BoneTextureRect.Visible = true;
+                AcidTextureRect.Visible = false;
+                HealTextureRect.Visible = false;
+                BloodSpikeTextureRect.Visible = false;
+
+                break;
+            case CardType.goblin:
+
+                SlimeTextureRect.Visible = false;
+                BoneTextureRect.Visible = false;
+                AcidTextureRect.Visible = true;
+                HealTextureRect.Visible = false;
+                BloodSpikeTextureRect.Visible = false;
+                break;
+            case CardType.troll:
+
+                SlimeTextureRect.Visible = false;
+                BoneTextureRect.Visible = false;
+                AcidTextureRect.Visible = false;
+                HealTextureRect.Visible = true;
+                BloodSpikeTextureRect.Visible = false;
+                break;
+            case CardType.vampire:
+
+                SlimeTextureRect.Visible = false;
+                BoneTextureRect.Visible = false;
+                AcidTextureRect.Visible = false;
+                HealTextureRect.Visible = false;
+                BloodSpikeTextureRect.Visible = true;
+                break;
+        }
     }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

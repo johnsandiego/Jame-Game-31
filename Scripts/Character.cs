@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using static CardManager;
 using static Godot.WebSocketPeer;
 
 public partial class Character : CharacterBody2D
@@ -17,6 +18,8 @@ public partial class Character : CharacterBody2D
     public Sprite2D skeletonSprite;
     [Export]
     public Sprite2D vampireSprite;
+    [Export]
+    public Sprite2D truckkunSprite;
     [Export] 
     public Projectile projectile;
     [Export]
@@ -25,8 +28,16 @@ public partial class Character : CharacterBody2D
     public Sprite2D regularPlayer;
     [Signal]
     public delegate void HitEventHandler();
+    [Signal]
+    public delegate void GameOverEventHandler();
 
-    public PackedScene projectileScene = ResourceLoader.Load<PackedScene>("res://Scene/Projectile.tscn");
+    public PackedScene slimeScene = ResourceLoader.Load<PackedScene>("res://Scene/Projectile.tscn");
+    public PackedScene shieldScene = ResourceLoader.Load<PackedScene>("res://Scene/Shield.tscn");
+    public PackedScene boneScene = ResourceLoader.Load<PackedScene>("res://Scene/bone_throw.tscn");
+    public PackedScene acidScene = ResourceLoader.Load<PackedScene>("res://Scene/acid_throw.tscn");
+    public PackedScene healScene = ResourceLoader.Load<PackedScene>("res://Scene/heal.tscn");
+    public PackedScene bloodspikeScene = ResourceLoader.Load<PackedScene>("res://Scene/Projectile.tscn");
+
     public Dictionary<int, Sprite2D> slimeSprites = new Dictionary<int, Sprite2D>();
     public const int MaxHealth = 100;
 	public int Health;
@@ -49,8 +60,12 @@ public partial class Character : CharacterBody2D
     public Action onHit;
     //attack
     public Vector2 attackDirection;
-
+    public CardType CardType;
     //skills
+    [Export]
+    public AudioStreamPlayer2D ouch;
+    [Export]
+    public AudioStreamPlayer2D hit;
     public CardHandler[] cards = new CardHandler[3];
 
     private enum State
@@ -80,14 +95,20 @@ public partial class Character : CharacterBody2D
             { 1, slimeSprite2 },
             { 2, slimeSprite3 },
             { 3, skeletonSprite },
-            { 4, vampireSprite }
+            { 4, vampireSprite },
+            { 5, truckkunSprite }
         };
     }
 
-    public void EnableEnemySprite(int index)
+    public CardType EnableEnemySprite(int index)
     {
         slimeSprites.TryGetValue(index, out Sprite2D sprite);
         sprite.Visible = true;
+
+        CardType cardType = index == 0 || index == 1 || index == 2 ? CardType.slime : CardType.skeleton;
+        cardType = index == 4 ? CardType.vampire : cardType;
+        cardType = index == 5 ? CardType.truckkun : cardType;
+        return cardType;
     }
 
     public void Setup(bool isPlayerTeam)
@@ -173,12 +194,18 @@ public partial class Character : CharacterBody2D
             });
 
         }
+
+        if(animName == "dead")
+        {
+            EmitSignal(SignalName.GameOver);
+        }
     }
 
     public void PlayAttackAnimation(Vector2 attackDirection)
     {
         this.attackDirection = attackDirection;
         animPlayer.Play("attack");
+        hit.Play(0);
     }
 
     public void Defend()
@@ -186,15 +213,57 @@ public partial class Character : CharacterBody2D
 
     }
 
-    public void UseCard(Character character)
+    public void UseCard(Character character, CardType cardType)
     {
-        projectile = projectileScene.Instantiate<Projectile>();
-        this.targetCharacter = character;
-        var direction = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(-Rotation)).Normalized();
-        projectile.Direction = direction;
-        projectile.GlobalPosition = GlobalPosition;
-        AddChild(projectile);
-        CurrentState = State.Busy;
+        switch (cardType)
+        {
+            case CardType.slime:
+
+                projectile = slimeScene.Instantiate<Projectile>();
+                this.targetCharacter = character;
+                var direction = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(-Rotation)).Normalized();
+                projectile.Direction = direction;
+                projectile.GlobalPosition = GlobalPosition + new Vector2(0, -100).Normalized();
+                AddChild(projectile);
+                CurrentState = State.Busy;
+                //later apply texture of card
+                // apply title and description
+                break;
+            case CardType.skeleton:
+                var bone = boneScene.Instantiate<BoneThrow>();
+                this.targetCharacter = character;
+                direction = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(-Rotation)).Normalized();
+                bone.Direction = direction;
+                bone.GlobalPosition = GlobalPosition + new Vector2(0, -100).Normalized();
+                AddChild(bone);
+                CurrentState = State.Busy;
+                break;
+            case CardType.goblin:
+                var acid = acidScene.Instantiate<BoneThrow>();
+                this.targetCharacter = character;
+                direction = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(-Rotation)).Normalized();
+                acid.Direction = direction;
+                acid.GlobalPosition = GlobalPosition;
+                AddChild(acid);
+                CurrentState = State.Busy;
+                break;
+            case CardType.troll:
+                var heal = healScene.Instantiate<heal>();
+                heal.GlobalPosition = GlobalPosition;
+                AddChild(heal);
+                CurrentState = State.Busy;
+                break;
+            case CardType.vampire:
+                var bloodspike = bloodspikeScene.Instantiate<Projectile>();
+                this.targetCharacter = character;
+                direction = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(-Rotation)).Normalized();
+                bloodspike.Direction = direction;
+                bloodspike.GlobalPosition = GlobalPosition;
+                AddChild(bloodspike);
+                CurrentState = State.Busy;
+                break;
+        }
+
         //Vector2 attackDirection = (character.GlobalPosition - GlobalPosition).Normalized();
         //PlayAttackAnimation(attackDirection);
 
@@ -231,6 +300,9 @@ public partial class Character : CharacterBody2D
         {
             animPlayer.Play("hitflash");
             onHit();
+            if(ouch != null)
+                ouch.Play(0);
+
         }
     }
 
@@ -257,15 +329,18 @@ public partial class Character : CharacterBody2D
 
         if (body != null)
         {
-            if(body is Projectile)
+            if(body is Projectile || body is BoneThrow)
             {
                 AttackFinished = true;
-                int damageAmount = new Random().Next(Strength - 10, Strength);
-                TakeDamage(damageAmount, () =>
+                if(new SkillManager().GetSkill(CardType).Stats.TryGetValue("Damage", out int value))
                 {
-                    EmitSignal(SignalName.Hit);
+                    int damageAmount = new Random().Next(value, value);
+                    TakeDamage(damageAmount, () =>
+                    {
+                        EmitSignal(SignalName.Hit);
 
-                });
+                    });
+                }
             }
             //animPlayer.Play("hitflash");
         }
@@ -276,15 +351,18 @@ public partial class Character : CharacterBody2D
         GD.Print("is projectile: ", body is Projectile);
         if (body != null)
         {
-            if (body is Projectile)
+            if (body is Projectile || body is BoneThrow)
             {
                 AttackFinished = true;
-                int damageAmount = new Random().Next(Strength - 10, Strength);
-                TakeDamage(damageAmount, () =>
+                if (new SkillManager().GetSkill(CardType).Stats.TryGetValue("Damage", out int value))
                 {
-                    EmitSignal(SignalName.Hit);
+                    int damageAmount = new Random().Next(value, value);
+                    TakeDamage(damageAmount, () =>
+                    {
+                        EmitSignal(SignalName.Hit);
 
-                });
+                    });
+                }
             }
             //animPlayer.Play("hitflash");
         }

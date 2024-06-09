@@ -1,10 +1,14 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://b23kdxlonntwv"]
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://b23kdxlonntwv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ucksq"]
+bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_etx5p"]
 bg_color = Color(0.0562916, 0.0562916, 0.0562916, 1)
 
 [resource]
 Button/font_sizes/font_size = 40
+Button/styles/normal = SubResource("StyleBoxFlat_ucksq")
 Label/colors/font_color = Color(0, 0, 0, 1)
 Label/font_sizes/font_size = 40
 Panel/styles/panel = SubResource("StyleBoxFlat_etx5p")
