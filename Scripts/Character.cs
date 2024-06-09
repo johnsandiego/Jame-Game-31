@@ -1,18 +1,42 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using static Godot.WebSocketPeer;
 
 public partial class Character : CharacterBody2D
 {
+    [Export]
+    public AnimationPlayer animPlayer;
+    [Export]
+    public Sprite2D slimeSprite;
+    [Export]
+    public Sprite2D slimeSprite2;
+    [Export]
+    public Sprite2D slimeSprite3;
+    [Export]
+    public Sprite2D skeletonSprite;
+    [Export]
+    public Sprite2D vampireSprite;
+    [Export] 
+    public Projectile projectile;
+    [Export]
+    public Sprite2D deadPlayer;
+    [Export]
+    public Sprite2D regularPlayer;
+    [Signal]
+    public delegate void HitEventHandler();
+
+    public PackedScene projectileScene = ResourceLoader.Load<PackedScene>("res://Scene/Projectile.tscn");
+    public Dictionary<int, Sprite2D> slimeSprites = new Dictionary<int, Sprite2D>();
     public const int MaxHealth = 100;
 	public int Health;
 	public int Strength;
 	public int Defense;
 	public int Speed;
+    public bool IsDefending;
     public int TurnMeter { get; set; }
     private State CurrentState;
-    [Export]
-    public AnimationPlayer animPlayer;
+
     public bool AttackFinished;
     public Vector2 StartingPosition;
     public bool isPlayerTeam;
@@ -25,6 +49,9 @@ public partial class Character : CharacterBody2D
     public Action onHit;
     //attack
     public Vector2 attackDirection;
+
+    //skills
+    public List<CardHandler> cards = new List<CardHandler>();
 
     private enum State
     {
@@ -42,8 +69,25 @@ public partial class Character : CharacterBody2D
     public override void _Ready()
 	{
         animPlayer.AnimationFinished += OnAnimationFinished;
+        //slimeSprite.Texture = new CompressedTexture2D();
+    }
 
+    public void InitializeSprites()
+    {
+        slimeSprites = new Dictionary<int, Sprite2D>
+        {
+            { 0, slimeSprite },
+            { 1, slimeSprite2 },
+            { 2, slimeSprite3 },
+            { 3, skeletonSprite },
+            { 4, vampireSprite }
+        };
+    }
 
+    public void EnableEnemySprite(int index)
+    {
+        slimeSprites.TryGetValue(index, out Sprite2D sprite);
+        sprite.Visible = true;
     }
 
     public void Setup(bool isPlayerTeam)
@@ -82,7 +126,7 @@ public partial class Character : CharacterBody2D
 
                 break;
             case State.Attacking:
-                float slideSpeed = 10f;
+                float slideSpeed = 5f;
                 GlobalPosition += (sliderTargetPosition - GlobalPosition) * slideSpeed * (float)delta;
                 float reachedDistance = 100f;
                 
@@ -116,6 +160,7 @@ public partial class Character : CharacterBody2D
         {
             AttackFinished = true;
             int damageAmount = new Random().Next(Strength-10, Strength);
+            damageAmount = targetCharacter.IsDefending ? damageAmount / 2 : damageAmount;
             targetCharacter.TakeDamage(damageAmount, () =>
             {
                 GD.Print("took damage");
@@ -141,8 +186,17 @@ public partial class Character : CharacterBody2D
 
     }
 
-    public void UseCard()
+    public void UseCard(Character character)
     {
+        projectile = projectileScene.Instantiate<Projectile>();
+        this.targetCharacter = character;
+        var direction = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(-Rotation)).Normalized();
+        projectile.Direction = direction;
+        projectile.GlobalPosition = GlobalPosition;
+        AddChild(projectile);
+        CurrentState = State.Busy;
+        //Vector2 attackDirection = (character.GlobalPosition - GlobalPosition).Normalized();
+        //PlayAttackAnimation(attackDirection);
 
     }
 
@@ -199,18 +253,39 @@ public partial class Character : CharacterBody2D
 
     public void OnEnemyBodyEntered(Node2D body)
     {
-        GD.Print(body);
+        GD.Print("is projectile: ", body is Projectile);
+
         if (body != null)
         {
+            if(body is Projectile)
+            {
+                AttackFinished = true;
+                int damageAmount = new Random().Next(Strength - 10, Strength);
+                TakeDamage(damageAmount, () =>
+                {
+                    EmitSignal(SignalName.Hit);
+
+                });
+            }
             //animPlayer.Play("hitflash");
         }
     }
 
     public void OnEnemyHurtBoxEntered(Node2D body)
     {
-        GD.Print(body);
+        GD.Print("is projectile: ", body is Projectile);
         if (body != null)
         {
+            if (body is Projectile)
+            {
+                AttackFinished = true;
+                int damageAmount = new Random().Next(Strength - 10, Strength);
+                TakeDamage(damageAmount, () =>
+                {
+                    EmitSignal(SignalName.Hit);
+
+                });
+            }
             //animPlayer.Play("hitflash");
         }
     }

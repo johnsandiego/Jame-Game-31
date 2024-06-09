@@ -1,15 +1,16 @@
-[gd_scene load_steps=13 format=3 uid="uid://c02eo3gih1mh4"]
+[gd_scene load_steps=15 format=3 uid="uid://c02eo3gih1mh4"]
 
 [ext_resource type="Script" path="res://Scripts/Character.cs" id="1_8tlqv"]
-[ext_resource type="Texture2D" uid="uid://dn5tp23nok6n5" path="res://assets/Kael.png" id="2_2i11w"]
 [ext_resource type="Shader" path="res://Shader/HitFlash.gdshader" id="2_th0vb"]
+[ext_resource type="Texture2D" uid="uid://bj8oyyycsum3s" path="res://assets/OfficeWorker.png" id="3_ua1hp"]
+[ext_resource type="Texture2D" uid="uid://dmgnh1keirqys" path="res://assets/DeadPlayer.png" id="4_dxupv"]
 
 [sub_resource type="Animation" id="Animation_opgj1"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/path = NodePath("regularPlayer:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -21,7 +22,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:position")
+tracks/1/path = NodePath("regularPlayer:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -45,7 +46,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Sprite2D:material:shader_parameter/enabled")
+tracks/3/path = NodePath("regularPlayer:material:shader_parameter/enabled")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -66,6 +67,30 @@ tracks/4/keys = {
 "update": 0,
 "values": [Vector2(0, 0)]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("deadSprite:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("deadSprite:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(6.66666, -26.6667)]
+}
 
 [sub_resource type="Animation" id="Animation_mg8oa"]
 resource_name = "attack"
@@ -74,7 +99,7 @@ step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/path = NodePath("regularPlayer:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -115,7 +140,7 @@ step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:material:shader_parameter/enabled")
+tracks/0/path = NodePath("regularPlayer:material:shader_parameter/enabled")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -132,7 +157,7 @@ step = 1.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/path = NodePath("regularPlayer:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -142,10 +167,38 @@ tracks/0/keys = {
 "values": [Vector2(1, 1), Vector2(1, 1.05), Vector2(1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_mlr4i"]
+resource_name = "dead"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("deadSprite:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.461747, -1.14878, -1.6293, -1.44169, -1.56029]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("deadSprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-3.33333, 13.3333), Vector2(-126.667, -6.66667), Vector2(-303.333, 120), Vector2(-353.333, 266.667), Vector2(-333.333, 213.333), Vector2(-336.667, 250)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ubwgr"]
 _data = {
 "RESET": SubResource("Animation_opgj1"),
 "attack": SubResource("Animation_mg8oa"),
+"dead": SubResource("Animation_mlr4i"),
 "hitflash": SubResource("Animation_yrnku"),
 "idle": SubResource("Animation_86bhb")
 }
@@ -167,20 +220,22 @@ height = 640.0
 radius = 300.0
 height = 740.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animPlayer")]
-scale = Vector2(0.2, 0.2)
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("animPlayer", "deadPlayer", "regularPlayer")]
+scale = Vector2(0.3, 0.3)
 collision_mask = 8
 script = ExtResource("1_8tlqv")
 animPlayer = NodePath("AnimationPlayer")
+deadPlayer = NodePath("deadSprite")
+regularPlayer = NodePath("regularPlayer")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_ubwgr")
 }
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="regularPlayer" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_ahu1r")
-texture = ExtResource("2_2i11w")
+texture = ExtResource("3_ua1hp")
 
 [node name="HitBox" type="Area2D" parent="."]
 position = Vector2(90, 0)
@@ -198,6 +253,16 @@ collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
 shape = SubResource("CapsuleShape2D_l5k38")
+
+[node name="ProjectileSpawnPoint" type="Node2D" parent="."]
+position = Vector2(450, -175)
+
+[node name="deadSprite" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(6.66666, -26.6667)
+scale = Vector2(0.883333, 0.883333)
+texture = ExtResource("4_dxupv")
+flip_h = true
 
 [connection signal="body_entered" from="HitBox" to="." method="OnBodyEntered"]
 [connection signal="body_entered" from="HurtBox" to="." method="OnHurtBoxEntered"]

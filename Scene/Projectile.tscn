@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://bbq5dxomcbe2p"]
+
+[ext_resource type="Script" path="res://Scripts/Projectile.cs" id="1_nqjpy"]
+[ext_resource type="Texture2D" uid="uid://d0742l8wxmoe8" path="res://assets/skills/slime_projectile.png" id="1_umww0"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uufgw"]
+radius = 27.0
+height = 54.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qof3h"]
+radius = 28.0
+
+[node name="Projectile" type="CharacterBody2D"]
+scale = Vector2(3, 3)
+script = ExtResource("1_nqjpy")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = -2.39285
+texture = ExtResource("1_umww0")
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource("CapsuleShape2D_uufgw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_qof3h")
+
+[connection signal="body_entered" from="HitBox" to="." method="OnBodyEntered"]

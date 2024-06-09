@@ -1,57 +1,109 @@
-[gd_scene load_steps=7 format=3 uid="uid://ctahk88q1msxw"]
+[gd_scene load_steps=12 format=3 uid="uid://ctahk88q1msxw"]
 
 [ext_resource type="Texture2D" uid="uid://dq3d3ri4ixhr" path="res://assets/Cardtemplate.png" id="1_usdyg"]
 [ext_resource type="Texture2D" uid="uid://bssbox1o2wm7l" path="res://assets/CardtemplateClicked.png" id="2_0jubh"]
-[ext_resource type="Texture2D" uid="uid://ddqkbe2xmv2g8" path="res://assets/slime2.png" id="2_38as6"]
 [ext_resource type="Texture2D" uid="uid://3fa2yo2if4f5" path="res://assets/CardtemplateHover.png" id="3_mp7tk"]
 [ext_resource type="Theme" uid="uid://b23kdxlonntwv" path="res://card.tres" id="3_t0wxk"]
+[ext_resource type="Script" path="res://Scripts/CardHandler.cs" id="4_4k55b"]
 [ext_resource type="Theme" uid="uid://c2r7boss2uppr" path="res://Carddescription.tres" id="4_8txpj"]
+[ext_resource type="Texture2D" uid="uid://d0742l8wxmoe8" path="res://assets/skills/slime_projectile.png" id="4_g8f5p"]
+[ext_resource type="Texture2D" uid="uid://fnj8mixucmde" path="res://assets/skills/bone.png" id="6_lwx7i"]
+[ext_resource type="Texture2D" uid="uid://so10gaxm8nu2" path="res://assets/skills/acid.png" id="7_htiy1"]
+[ext_resource type="Texture2D" uid="uid://drbvl5i4numul" path="res://assets/skills/health.png" id="8_sirhl"]
+[ext_resource type="Texture2D" uid="uid://cnuwy3h2kjxv2" path="res://assets/skills/bloodspike.png" id="9_irjea"]
 
-[node name="StickySlime" type="TextureButton"]
+[node name="Control" type="Control" node_paths=PackedStringArray("SlimeTextureRect", "BoneTextureRect", "AcidTextureRect", "HealTextureRect", "BloodSpikeTextureRect", "Title", "Description")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 650.0
+offset_bottom = 648.0
+script = ExtResource("4_4k55b")
+SlimeTextureRect = NodePath("Slime")
+BoneTextureRect = NodePath("Bone")
+AcidTextureRect = NodePath("Acid")
+HealTextureRect = NodePath("Heal")
+BloodSpikeTextureRect = NodePath("BloodSpike")
+Title = NodePath("Title")
+Description = NodePath("Description")
+
+[node name="Card" type="TextureButton" parent="."]
 clip_contents = true
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -662.0
-offset_top = -333.0
-offset_right = 362.0
-offset_bottom = 691.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.553, 0.553)
+layout_mode = 1
+offset_right = 1024.0
+offset_bottom = 1024.0
+scale = Vector2(0.633, 0.633)
 texture_normal = ExtResource("1_usdyg")
 texture_pressed = ExtResource("2_0jubh")
 texture_hover = ExtResource("3_mp7tk")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="Slime" type="TextureRect" parent="."]
+visible = false
 layout_mode = 0
-offset_left = 265.0
-offset_top = 94.0
-offset_right = 780.0
-offset_bottom = 794.0
-texture = ExtResource("2_38as6")
+offset_left = 204.0
+offset_top = 133.0
+offset_right = 431.0
+offset_bottom = 363.0
+texture = ExtResource("4_g8f5p")
+expand_mode = 1
+flip_h = true
+
+[node name="Bone" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 204.0
+offset_top = 133.0
+offset_right = 431.0
+offset_bottom = 363.0
+texture = ExtResource("6_lwx7i")
+expand_mode = 1
+flip_h = true
+
+[node name="Acid" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 204.0
+offset_top = 133.0
+offset_right = 431.0
+offset_bottom = 363.0
+texture = ExtResource("7_htiy1")
+expand_mode = 1
+flip_h = true
+
+[node name="Heal" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 204.0
+offset_top = 133.0
+offset_right = 431.0
+offset_bottom = 363.0
+texture = ExtResource("8_sirhl")
+expand_mode = 1
+flip_h = true
+
+[node name="BloodSpike" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 204.0
+offset_top = 133.0
+offset_right = 431.0
+offset_bottom = 363.0
+texture = ExtResource("9_irjea")
 expand_mode = 1
 flip_h = true
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 0
-offset_left = 320.0
-offset_top = 66.0
-offset_right = 796.0
-offset_bottom = 124.0
+offset_left = 200.0
+offset_top = 33.0
+offset_right = 479.0
+offset_bottom = 91.0
 theme = ExtResource("3_t0wxk")
-text = "Sticky Slime"
 
 [node name="Description" type="Label" parent="."]
 layout_mode = 0
-offset_left = 221.0
-offset_top = 707.0
-offset_right = 796.0
-offset_bottom = 947.0
+offset_left = 143.0
+offset_top = 436.0
+offset_right = 491.0
+offset_bottom = 611.0
 theme = ExtResource("4_8txpj")
-text = "Launches a blob of sticky slime at the enemy which has a change to slow
-
-    -1 to speed"
 autowrap_mode = 2

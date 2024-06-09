@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Reflection.PortableExecutable;
 using static CardManager;
 
 public partial class TurnManager : Node
@@ -18,14 +19,16 @@ public partial class TurnManager : Node
     [Export]
     public Panel randomCard;
     [Export]
-    public TextureButton card1Button;
+    public CardHandler card1Button;
     [Export]
-    public TextureButton card2Button;
+    public CardHandler card2Button;
     [Export]
-    public TextureButton card3Button;
+    public CardHandler card3Button;
+    [Export]
+    public Button startNextBattle;
 
     public PackedScene playerScene = ResourceLoader.Load<PackedScene>("res://Scene/Player.tscn");
-    public PackedScene enemyScene = ResourceLoader.Load<PackedScene>("res://Scene/Slime.tscn");
+    public PackedScene enemyScene = ResourceLoader.Load<PackedScene>("res://Scene/Enemy.tscn");
     private State state;
 
     public Character player;
@@ -56,7 +59,8 @@ public partial class TurnManager : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-        InitializeCharacters();
+        InitializePlayer(true);
+        SpawnNewEnemy();
         SetActiveCharacter(player);        
         state = State.WaitingForPlayer;
 
@@ -64,6 +68,7 @@ public partial class TurnManager : Node
         cardManager = randomCard.GetNode<CardManager>("RandomCard");
         GD.Print(cardManager is CardManager);
         cardManager.Equip += OnEquip;
+        cardManager.Discard += OnDiscard;
     }
 
     public void OnEquip(CardType cardType)
@@ -72,6 +77,8 @@ public partial class TurnManager : Node
         {
             case CardType.slime:
                 card1Button.Visible = true;
+                randomCard.Visible = false;
+                startNextBattle.Visible = true;
                 //later apply texture of card
                 // apply title and description
                 break;
@@ -82,33 +89,39 @@ public partial class TurnManager : Node
         }
     }
 
-    private void InitializeCharacters()
+    public void OnDiscard()
     {
-        player = playerScene.Instantiate<Character>();
-        enemy = enemyScene.Instantiate<Character>();
-        playerNode.AddChild(player);
-        player.GlobalPosition = playerNode.GlobalPosition;
-        enemyNode.AddChild(enemy);
-        enemy.GlobalPosition = enemyNode.GlobalPosition;
-        player.StartingPosition = playerNode.GlobalPosition;
-        enemy.StartingPosition = enemyNode.GlobalPosition;
+        randomCard.Visible = false;
+        cardManager.InitializeValues();
+        startNextBattle.Visible = true;
+    }
+
+    private void InitializePlayer(bool newPlayer)
+    {
+        if (newPlayer)
+        {
+            player = playerScene.Instantiate<Character>();
+            player.Hit += OnCharacterHit;
+            playerNode.AddChild(player);
+            player.GlobalPosition = playerNode.GlobalPosition;
+            player.StartingPosition = playerNode.GlobalPosition;
+        }
+
 
         player.Health = player.GetMaxHealthAmount();
         player.Strength = 90;
         player.Defense = 2;
         player.Speed = 2;
 
-        enemy.Health = enemy.GetMaxHealthAmount();
-        enemy.Strength = 90;
-        enemy.Defense = 2;
-        enemy.Speed = 2;
-
-
         playerhealth.MaxValue = player.GetMaxHealthAmount();
         playerhealth.Value = player.GetHealthAmount();
-        enemyhealth.MaxValue = enemy.GetMaxHealthAmount();
-        enemyhealth.Value = enemy.GetHealthAmount();
 
+    }
+
+    public void OnCharacterHit()
+    {
+        GD.Print("character is hit");
+        ChooseNextActiveCharacter();
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -128,11 +141,12 @@ public partial class TurnManager : Node
                     break;
                 case PlayerAction.Defended:
                     state = State.Busy;
-                    //player.Defend(enemy, playerAction);
+                    player.IsDefending = true;
+                    ChooseNextActiveCharacter();
                     break;
                 case PlayerAction.UseCard1:
                     state = State.Busy;
-                    //player.UseCard(enemy, card, playerAction);
+                    player.UseCard(enemy);
                     break;
                 case PlayerAction.UseCard2:
                     state = State.Busy;
@@ -199,6 +213,9 @@ public partial class TurnManager : Node
         if (player.IsDead())
         {
             GD.Print("player is dead");
+            player.regularPlayer.Visible = false;
+            player.deadPlayer.Visible = true;
+            player.animPlayer.Play("dead");
             //show a card with the question mark. so player can click on it.
             //enable the next arrow for next fight
             return true;
@@ -207,6 +224,7 @@ public partial class TurnManager : Node
         if (enemy.IsDead())
         {
             enemy.QueueFree();
+            cardManager.InitializeValues();
             randomCard.Visible = true;
             GD.Print("enemy is dead");
             return true;
@@ -254,6 +272,44 @@ public partial class TurnManager : Node
     {
         playerAction = PlayerAction.UseCard3;
         isPlayerTurn = true;
+    }
+
+    private void OnStartNextBattle()
+    {
+        InitializePlayer(false);
+        SpawnNewEnemy();
+
+        state = State.WaitingForPlayer;
+        startNextBattle.Visible = false;
+        isPlayerTurn = false;
+        //spawn a new enemy
+        //spawn the player by sliding them in 
+        //set state to waiting on player
+        //disable the start next battler button
+    }
+
+    private void SpawnNewEnemy()
+    {
+        enemy = enemyScene.Instantiate<Character>();
+        enemy.Hit += OnEnemyHit;
+        enemy.InitializeSprites();
+        //enemy.GlobalPosition = enemyNode.GlobalPosition;
+        enemyNode.AddChild(enemy);
+        enemy.StartingPosition = enemyNode.GlobalPosition;
+
+        enemy.Health = enemy.GetMaxHealthAmount();
+        enemy.Strength = 90;
+        enemy.Defense = 2;
+        enemy.Speed = 2;
+        enemyhealth.MaxValue = enemy.GetMaxHealthAmount();
+        enemyhealth.Value = enemy.GetHealthAmount();
+        enemy.EnableEnemySprite(new Random().Next(0, 4));
+
+    }
+
+    private void OnEnemyHit()
+    {
+        ChooseNextActiveCharacter();
     }
 
     private List<Character> characters = new List<Character>();
