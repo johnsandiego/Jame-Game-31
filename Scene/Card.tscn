@@ -12,9 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://drbvl5i4numul" path="res://assets/skills/health.png" id="8_sirhl"]
 [ext_resource type="Texture2D" uid="uid://cnuwy3h2kjxv2" path="res://assets/skills/bloodspike.png" id="9_irjea"]
 
-[node name="Control" type="Control" node_paths=PackedStringArray("SlimeTextureRect", "BoneTextureRect", "AcidTextureRect", "HealTextureRect", "BloodSpikeTextureRect", "Title", "Description")]
-layout_mode = 3
-anchors_preset = 0
+[node name="Control" type="Button" node_paths=PackedStringArray("SlimeTextureRect", "BoneTextureRect", "AcidTextureRect", "HealTextureRect", "BloodSpikeTextureRect", "Title", "Description")]
 offset_right = 650.0
 offset_bottom = 648.0
 script = ExtResource("4_4k55b")

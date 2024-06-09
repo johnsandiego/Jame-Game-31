@@ -51,7 +51,7 @@ public partial class Character : CharacterBody2D
     public Vector2 attackDirection;
 
     //skills
-    public List<CardHandler> cards = new List<CardHandler>();
+    public CardHandler[] cards = new CardHandler[3];
 
     private enum State
     {

@@ -270,10 +270,16 @@ position = Vector2(577, 107)
 scale = Vector2(0.655134, 0.683594)
 texture = ExtResource("5_1o4kh")
 
+[connection signal="pressed" from="CanvasLayer/CardContainer/HBoxContainer/Panel/CardPosition/Card" to="." method="OnPlayerUseCard1"]
+[connection signal="pressed" from="CanvasLayer/CardContainer/HBoxContainer/Panel2/CardPosition2/Card2" to="." method="OnPlayerUseCard2"]
+[connection signal="pressed" from="CanvasLayer/CardContainer/HBoxContainer/Panel3/CardPosition3/Card3" to="." method="OnPlayerUseCard3"]
 [connection signal="pressed" from="CanvasLayer/PlayerMoves/VBoxContainer/Slash" to="." method="OnSlashPressed"]
 [connection signal="pressed" from="CanvasLayer/PlayerMoves/VBoxContainer/Defend" to="." method="OnPlayerDefend"]
 [connection signal="pressed" from="CanvasLayer/StartNextBattle" to="." method="OnStartNextBattle"]
 
+[editable path="CanvasLayer/CardContainer/HBoxContainer/Panel/CardPosition/Card"]
+[editable path="CanvasLayer/CardContainer/HBoxContainer/Panel2/CardPosition2/Card2"]
+[editable path="CanvasLayer/CardContainer/HBoxContainer/Panel3/CardPosition3/Card3"]
 [editable path="CanvasLayer/BackgroundOverlay/RandomCard"]
 [editable path="CanvasLayer/BackgroundOverlay/RandomCard/Card"]
 [editable path="CanvasLayer/BackgroundOverlay/RandomCard/CardNoHover"]

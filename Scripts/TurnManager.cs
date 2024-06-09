@@ -76,13 +76,59 @@ public partial class TurnManager : Node
         switch(cardType)
         {
             case CardType.slime:
-                card1Button.Visible = true;
+                if (player.cards.Length < 4)
+                {
+                    if (player.cards[0] == null)
+                    {
+                        player.cards[0] = card1Button;
+                        card1Button = card1Button.InitializeCard("Sticky Slime", "Launches a sticky goo causing slowness", CardType.slime);
+                        card1Button.Visible = true;
+
+                    }
+                    else if(player.cards[1] == null)
+                    {
+                        player.cards[1] = card2Button;
+                        card2Button = card2Button.InitializeCard("Sticky Slime", "Launches a sticky goo causing slowness", CardType.slime);
+                        card2Button.Visible = true;
+                    }
+                    else if (player.cards[2] == null)
+                    {
+                        player.cards[2] = card3Button;
+                        card3Button = card3Button.InitializeCard("Sticky Slime", "Launches a sticky goo causing slowness", CardType.slime);
+                        card3Button.Visible = true;
+                    }
+                }
+
                 randomCard.Visible = false;
                 startNextBattle.Visible = true;
                 //later apply texture of card
                 // apply title and description
                 break;
-            case CardType.skeleton: break;
+            case CardType.skeleton:
+                if (player.cards.Length < 4)
+                {
+                    if (player.cards[0] == null)
+                    {
+                        player.cards[0] = card1Button;
+                        card1Button = card1Button.InitializeCard("Bone Club", "Hits the enemy with a leg bone", CardType.skeleton);
+                        player.Strength = 3;
+                        card1Button.Visible = true;
+
+                    }
+                    else if (player.cards[1] == null)
+                    {
+                        player.cards[1] = card2Button;
+                        card2Button = card2Button.InitializeCard("Sticky Slime", "Launches a sticky goo causing slowness", CardType.skeleton);
+                        card2Button.Visible = true;
+                    }
+                    else if (player.cards[2] == null)
+                    {
+                        player.cards[2] = card3Button;
+                        card3Button = card3Button.InitializeCard("Sticky Slime", "Launches a sticky goo causing slowness", CardType.skeleton);
+                        card3Button.Visible = true;
+                    }
+                }
+                break;
             case CardType.goblin: break;
             case CardType.troll: break;
             case CardType.vampire: break;

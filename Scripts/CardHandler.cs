@@ -2,7 +2,7 @@ using Godot;
 using System;
 using static CardManager;
 
-public partial class CardHandler : Control
+public partial class CardHandler : Button
 {
 	[Export]
 	public TextureRect SlimeTextureRect { get; set; }
