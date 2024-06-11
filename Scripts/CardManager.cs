@@ -58,7 +58,7 @@ public partial class CardManager : Control
         slimeCard = new CardHandler();
 		var skill = new SkillManager().GetSkill(cardType);
         CardNoHover = CardNoHover.InitializeCard(skill.Title, skill.Description, cardType);
-		CardNoHover.Damage = skill.Stats.TryGetValue("Damage", out int value) ? value : 20;
+		CardNoHover.Damage = skill.Stats.TryGetValue("Damage", out int value) ? value * 2 : 20;
 
         UnknownCard.Visible = true;
         CardNoHover.Visible = false;

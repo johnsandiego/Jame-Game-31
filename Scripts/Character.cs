@@ -334,7 +334,7 @@ public partial class Character : CharacterBody2D
                 AttackFinished = true;
                 if(new SkillManager().GetSkill(CardType).Stats.TryGetValue("Damage", out int value))
                 {
-                    int damageAmount = new Random().Next(value, value);
+                    int damageAmount = new Random().Next(value, value*2);
                     TakeDamage(damageAmount, () =>
                     {
                         EmitSignal(SignalName.Hit);
@@ -356,7 +356,7 @@ public partial class Character : CharacterBody2D
                 AttackFinished = true;
                 if (new SkillManager().GetSkill(CardType).Stats.TryGetValue("Damage", out int value))
                 {
-                    int damageAmount = new Random().Next(value, value);
+                    int damageAmount = new Random().Next(value, value * 2);
                     TakeDamage(damageAmount, () =>
                     {
                         EmitSignal(SignalName.Hit);

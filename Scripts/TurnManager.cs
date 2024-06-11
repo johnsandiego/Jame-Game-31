@@ -1,7 +1,5 @@
 using Godot;
 using System;
-using System.Collections.Generic;
-using System.Reflection.PortableExecutable;
 using static CardManager;
 
 public partial class TurnManager : Node
@@ -83,7 +81,7 @@ public partial class TurnManager : Node
         cardManager.Replace += OnReplace;
         player.GameOver += OnDeadFinished;
         audio.Finished += audioFinished;
-        audio.Play(0);
+        //audio.Play(0);
         label.SetText("You have the ability to collect a skill from a defeated enemy and turn it into cards. Use it wisely.     ");
         label.RollingTextOver += TextOver;
     }

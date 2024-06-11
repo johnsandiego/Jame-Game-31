@@ -509,6 +509,7 @@ scale = Vector2(0.651786, 0.683594)
 texture = ExtResource("5_1o4kh")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+visible = false
 stream = ExtResource("10_0u184")
 
 [connection signal="pressed" from="CanvasLayer/CardContainer/HBoxContainer/Panel/CardPosition/Button" to="." method="OnPlayerUseCard1"]
