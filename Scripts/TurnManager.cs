@@ -288,7 +288,7 @@ public partial class TurnManager : Node
             player.GlobalPosition = playerNode.GlobalPosition;
             player.StartingPosition = playerNode.GlobalPosition;
             player.Health = player.GetMaxHealthAmount();
-            player.Strength = 20;
+            player.Strength = 5;
             player.Defense = 2;
             player.Speed = 2;
             playerhealth.MaxValue = player.GetMaxHealthAmount();
@@ -552,21 +552,37 @@ public partial class TurnManager : Node
         enemyNode.AddChild(enemy);
         enemy.StartingPosition = enemyNode.GlobalPosition;
 
-        enemy.Health = enemy.GetMaxHealthAmount();
-        enemy.Defense = 2;
-        enemy.Speed = 2;
-        enemyhealth.MaxValue = enemy.GetMaxHealthAmount();
-        enemyhealth.Value = enemy.GetHealthAmount();
 
         var index = new Random().Next(0, 8);
         GD.Print("index: ", index);
-        enemy.CardType = index == 6 || index == 7 || index == 8 ? enemy.EnableEnemySprite(0) : enemy.EnableEnemySprite(index);
+        Character.Enemies.TryGetValue(enemy.CardType, out EnemyBase enemyStat);
+
         GD.Print("cardtype: ", enemy.CardType);
 
-        new SkillManager().GetSkill(enemy.CardType).Stats.TryGetValue("Damage", out int value);
-        GD.Print("damage", value);
-        enemy.Strength = value <= 0 ? 20 : value;
 
+        Random random = new Random();
+        double roll = random.NextDouble();
+        double cumulative = 0.0;
+
+        foreach (var enemyRoll in Character.Enemies.Values)
+        {
+            cumulative += enemyRoll.SpawnChance;
+            if (roll < cumulative)
+            {
+                enemy.CardType = enemy.EnableEnemySprite((int)enemyRoll.CardType);
+
+                enemy.CardType = enemyRoll.CardType;
+                enemy.Health = enemyRoll.Health;
+                enemy.Strength = enemyRoll.Strength;
+                enemy.Defense = enemyRoll.Defense;
+                enemy.Speed = enemyRoll.Speed;
+                break;
+            }
+        }
+        GD.Print("enemy damage: ", enemy.Strength);
+
+        enemyhealth.MaxValue = enemy.Health;
+        enemyhealth.Value = enemy.Health;
 
     }
 

@@ -20,7 +20,7 @@ public partial class Character : CharacterBody2D
     public Sprite2D vampireSprite;
     [Export]
     public Sprite2D truckkunSprite;
-    [Export] 
+    [Export]
     public Projectile projectile;
     [Export]
     public Sprite2D deadPlayer;
@@ -39,11 +39,11 @@ public partial class Character : CharacterBody2D
     public PackedScene bloodspikeScene = ResourceLoader.Load<PackedScene>("res://Scene/Projectile.tscn");
 
     public Dictionary<int, Sprite2D> slimeSprites = new Dictionary<int, Sprite2D>();
-    public const int MaxHealth = 100;
-	public int Health;
-	public int Strength;
-	public int Defense;
-	public int Speed;
+    public const int MaxHealth = 20;
+    public int Health;
+    public int Strength;
+    public int Defense;
+    public int Speed;
     public bool IsDefending;
     public int TurnMeter { get; set; }
     private State CurrentState;
@@ -75,6 +75,16 @@ public partial class Character : CharacterBody2D
         Busy
     }
 
+    public static Dictionary<CardType, EnemyBase> Enemies = new Dictionary<CardType, EnemyBase>()
+    {
+        {CardType.slime, new EnemyBase(CardType.slime, "Slime", "Launches a sticky goo.", 5, 2, 2, 2, .3 , new List<CardType>(){ CardType.slime, CardType.troll })},
+        {CardType.skeleton, new EnemyBase(CardType.skeleton, "Skeleton", "Punches.", 8, 3, 2, 2, .3, new List<CardType>(){ CardType.troll, CardType.skeleton }) },
+        {CardType.troll, new EnemyBase(CardType.troll,"Troll", "Hits with a club.", 10, 5, 5, 2, .2, new List<CardType>(){ CardType.slime, CardType.troll, CardType.skeleton })},
+        {CardType.goblin, new EnemyBase(CardType.goblin,"Goblin", "Attacks with a stick.",5, 2, 2, 2, .16, new List<CardType>(){ CardType.slime, CardType.troll, CardType.skeleton })},
+        {CardType.vampire, new EnemyBase(CardType.vampire,"Vampire", "Blood sucker", 20, 10, 10, 10, .03, new List<CardType>(){ CardType.slime, CardType.troll, CardType.vampire })},
+        {CardType.truckkun, new EnemyBase(CardType.truckkun,"Truck-kun", "Sends you to another world" , 9999,9999,9999,9999, .01, new List < CardType >() { CardType.slime, CardType.troll })}
+    };
+
     // Method to perform an action (e.g., attack, defend)
     public virtual void PerformAction()
     {
@@ -82,7 +92,7 @@ public partial class Character : CharacterBody2D
     }
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
-	{
+    {
         animPlayer.AnimationFinished += OnAnimationFinished;
         //slimeSprite.Texture = new CompressedTexture2D();
     }
@@ -105,16 +115,36 @@ public partial class Character : CharacterBody2D
         slimeSprites.TryGetValue(index, out Sprite2D sprite);
         sprite.Visible = true;
 
-        CardType cardType = index == 0 || index == 1 || index == 2 ? CardType.slime : CardType.skeleton;
-        cardType = index == 4 ? CardType.vampire : cardType;
-        cardType = index == 5 ? CardType.truckkun : cardType;
+        CardType cardType;
+        switch (index)
+        {
+            case (int)CardType.slime:
+                cardType = CardType.slime;
+                break;
+            case (int)CardType.skeleton:
+                cardType = CardType.skeleton;
+                break;
+            case (int)CardType.goblin:
+                cardType = CardType.goblin;
+                break;
+            case (int)CardType.troll:
+                cardType = CardType.troll;
+                break;
+            case (int)CardType.vampire:
+                cardType = CardType.vampire;
+                break;
+            default:
+                cardType = CardType.nothing;
+                break;
+        }
+
         return cardType;
     }
 
     public void Setup(bool isPlayerTeam)
     {
         this.isPlayerTeam = isPlayerTeam;
-        if(isPlayerTeam)
+        if (isPlayerTeam)
         {
             //set the texture
 
@@ -137,7 +167,7 @@ public partial class Character : CharacterBody2D
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _PhysicsProcess(double delta)
-	{
+    {
         switch (CurrentState)
         {
             case State.Idle:
@@ -150,7 +180,7 @@ public partial class Character : CharacterBody2D
                 float slideSpeed = 5f;
                 GlobalPosition += (sliderTargetPosition - GlobalPosition) * slideSpeed * (float)delta;
                 float reachedDistance = 100f;
-                
+
                 if (GlobalPosition.DistanceTo(sliderTargetPosition) < reachedDistance)
                 {
                     //arrived at position
@@ -159,7 +189,7 @@ public partial class Character : CharacterBody2D
                 break;
 
         }
-	}
+    }
 
     public void Attack(Character character, Action onAttackComplete)
     {
@@ -177,11 +207,15 @@ public partial class Character : CharacterBody2D
 
     public void OnAnimationFinished(StringName animName)
     {
-        if(animName == "attack")
+        if (animName == "attack")
         {
             AttackFinished = true;
-            int damageAmount = new Random().Next(Strength-10, Strength);
-            damageAmount = targetCharacter.IsDefending ? damageAmount / 2 : damageAmount;
+            int damageAmount = new Random().Next(Strength - 2, Strength);
+            damageAmount = targetCharacter.IsDefending ? damageAmount / targetCharacter.Defense : damageAmount;
+            if(damageAmount < 0)
+            {
+                damageAmount = 1;
+            }
             targetCharacter.TakeDamage(damageAmount, () =>
             {
                 GD.Print("took damage");
@@ -195,7 +229,7 @@ public partial class Character : CharacterBody2D
 
         }
 
-        if(animName == "dead")
+        if (animName == "dead")
         {
             EmitSignal(SignalName.GameOver);
         }
@@ -274,7 +308,7 @@ public partial class Character : CharacterBody2D
         this.sliderTargetPosition = destination;
         this.onSlideComplete = onSlideComplete;
         CurrentState = State.Attacking;
-        if(sliderTargetPosition.X > 0)
+        if (sliderTargetPosition.X > 0)
         {
             //play animation slide right
         }
@@ -300,7 +334,7 @@ public partial class Character : CharacterBody2D
         {
             animPlayer.Play("hitflash");
             onHit();
-            if(ouch != null)
+            if (ouch != null)
                 ouch.Play(0);
 
         }
@@ -319,7 +353,7 @@ public partial class Character : CharacterBody2D
         GD.Print(body);
         if (body != null)
         {
-            
+
         }
     }
 
@@ -329,12 +363,12 @@ public partial class Character : CharacterBody2D
 
         if (body != null)
         {
-            if(body is Projectile || body is BoneThrow)
+            if (body is Projectile || body is BoneThrow)
             {
                 AttackFinished = true;
-                if(new SkillManager().GetSkill(CardType).Stats.TryGetValue("Damage", out int value))
+                if (new SkillManager().GetSkill(CardType).Stats.TryGetValue("Damage", out int value))
                 {
-                    int damageAmount = new Random().Next(value, value*2);
+                    int damageAmount = new Random().Next(value, value * 2);
                     TakeDamage(damageAmount, () =>
                     {
                         EmitSignal(SignalName.Hit);
