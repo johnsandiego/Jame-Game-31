@@ -11,9 +11,9 @@ public partial class Character : CharacterBody2D
     [Export]
     public Sprite2D slimeSprite;
     [Export]
-    public Sprite2D slimeSprite2;
+    public Sprite2D goblinSprite;
     [Export]
-    public Sprite2D slimeSprite3;
+    public Sprite2D trollSprite;
     [Export]
     public Sprite2D skeletonSprite;
     [Export]
@@ -38,7 +38,7 @@ public partial class Character : CharacterBody2D
     public PackedScene healScene = ResourceLoader.Load<PackedScene>("res://Scene/heal.tscn");
     public PackedScene bloodspikeScene = ResourceLoader.Load<PackedScene>("res://Scene/Projectile.tscn");
 
-    public Dictionary<int, Sprite2D> slimeSprites = new Dictionary<int, Sprite2D>();
+    public Dictionary<int, Sprite2D> sprites = new Dictionary<int, Sprite2D>();
     public const int MaxHealth = 20;
     public int Health;
     public int Strength;
@@ -79,8 +79,8 @@ public partial class Character : CharacterBody2D
     {
         {CardType.slime, new EnemyBase(CardType.slime, "Slime", "Launches a sticky goo.", 5, 2, 2, 2, .3 , new List<CardType>(){ CardType.slime, CardType.troll })},
         {CardType.skeleton, new EnemyBase(CardType.skeleton, "Skeleton", "Punches.", 8, 3, 2, 2, .3, new List<CardType>(){ CardType.troll, CardType.skeleton }) },
-        {CardType.troll, new EnemyBase(CardType.troll,"Troll", "Hits with a club.", 10, 5, 5, 2, .2, new List<CardType>(){ CardType.slime, CardType.troll, CardType.skeleton })},
         {CardType.goblin, new EnemyBase(CardType.goblin,"Goblin", "Attacks with a stick.",5, 2, 2, 2, .16, new List<CardType>(){ CardType.slime, CardType.troll, CardType.skeleton })},
+        {CardType.troll, new EnemyBase(CardType.troll,"Troll", "Hits with a club.", 10, 5, 5, 2, .2, new List<CardType>(){ CardType.slime, CardType.troll, CardType.skeleton })},
         {CardType.vampire, new EnemyBase(CardType.vampire,"Vampire", "Blood sucker", 20, 10, 10, 10, .03, new List<CardType>(){ CardType.slime, CardType.troll, CardType.vampire })},
         {CardType.truckkun, new EnemyBase(CardType.truckkun,"Truck-kun", "Sends you to another world" , 9999,9999,9999,9999, .01, new List < CardType >() { CardType.slime, CardType.troll })}
     };
@@ -99,12 +99,12 @@ public partial class Character : CharacterBody2D
 
     public void InitializeSprites()
     {
-        slimeSprites = new Dictionary<int, Sprite2D>
+        sprites = new Dictionary<int, Sprite2D>
         {
             { 0, slimeSprite },
-            { 1, slimeSprite2 },
-            { 2, slimeSprite3 },
-            { 3, skeletonSprite },
+            { 1, skeletonSprite },
+            { 2, goblinSprite },
+            { 3, trollSprite },
             { 4, vampireSprite },
             { 5, truckkunSprite }
         };
@@ -112,10 +112,12 @@ public partial class Character : CharacterBody2D
 
     public CardType EnableEnemySprite(int index)
     {
-        slimeSprites.TryGetValue(index, out Sprite2D sprite);
+        sprites.TryGetValue(index, out Sprite2D sprite);
         sprite.Visible = true;
 
         CardType cardType;
+        GD.Print("cardtype index: ", index);
+
         switch (index)
         {
             case (int)CardType.slime:
@@ -137,7 +139,7 @@ public partial class Character : CharacterBody2D
                 cardType = CardType.nothing;
                 break;
         }
-
+        GD.Print(cardType);
         return cardType;
     }
 

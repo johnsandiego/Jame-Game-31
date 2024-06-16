@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://7384dxsk047v"]
+
+[ext_resource type="Texture2D" uid="uid://be1gfo5j0q75u" path="res://assets/effects/60 Retro Effect 32x32 Pack 1 Free/20.png" id="1_dm3vw"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_vr6a7"]
+particles_animation = true
+particles_anim_h_frames = 6
+particles_anim_v_frames = 2
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_muucv"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 128.0
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+anim_speed_min = 1.67
+anim_speed_max = 1.74
+
+[node name="Special Effect" type="GPUParticles2D"]
+material = SubResource("CanvasItemMaterial_vr6a7")
+position = Vector2(-3, 6)
+process_material = SubResource("ParticleProcessMaterial_muucv")
+texture = ExtResource("1_dm3vw")
+explosiveness = 0.54

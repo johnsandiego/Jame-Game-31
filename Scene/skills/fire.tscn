@@ -1,0 +1,45 @@
+[gd_scene load_steps=8 format=3 uid="uid://44lic5bp61pn"]
+
+[sub_resource type="Curve" id="Curve_xbsdo"]
+min_value = -360.0
+max_value = 360.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_p7k1o"]
+curve = SubResource("Curve_xbsdo")
+
+[sub_resource type="Gradient" id="Gradient_m6nak"]
+offsets = PackedFloat32Array(0, 0.552083, 1)
+colors = PackedColorArray(1, 1, 0, 1, 0.988235, 0.321569, 0.219608, 1, 1, 0.105882, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_f2yad"]
+gradient = SubResource("Gradient_m6nak")
+
+[sub_resource type="Curve" id="Curve_6hf04"]
+_data = [Vector2(0, 0.651571), 0.0, 0.0, 0, 0, Vector2(0.451456, 0.393253), 2.1823, 2.1823, 0, 0, Vector2(1, 0.249076), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_ck8uq"]
+curve = SubResource("Curve_6hf04")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qr0d3"]
+particle_flag_disable_z = true
+spread = 10.0
+initial_velocity_min = 90.0
+initial_velocity_max = 488.18
+angular_velocity_curve = SubResource("CurveTexture_p7k1o")
+gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 15.0
+scale_curve = SubResource("CurveTexture_ck8uq")
+color_ramp = SubResource("GradientTexture1D_f2yad")
+turbulence_enabled = true
+turbulence_noise_scale = 4.0
+
+[node name="Fire" type="GPUParticles2D"]
+visible = false
+position = Vector2(514, 304)
+scale = Vector2(2, 2)
+amount = 10000
+process_material = SubResource("ParticleProcessMaterial_qr0d3")
