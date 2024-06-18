@@ -39,11 +39,16 @@ public partial class Character : CharacterBody2D
     public PackedScene bloodspikeScene = ResourceLoader.Load<PackedScene>("res://Scene/Projectile.tscn");
 
     public Dictionary<int, Sprite2D> slimeSprites = new Dictionary<int, Sprite2D>();
+
+    //character status
     public const int MaxHealth = 20;
     public int Health;
     public int Strength;
     public int Defense;
     public int Speed;
+    public float Experience;
+    public int Level;
+    public float ExpToNextLevel;
     public bool IsDefending;
     public int TurnMeter { get; set; }
     private State CurrentState;
@@ -94,7 +99,6 @@ public partial class Character : CharacterBody2D
     public override void _Ready()
     {
         animPlayer.AnimationFinished += OnAnimationFinished;
-        //slimeSprite.Texture = new CompressedTexture2D();
     }
 
     public void InitializeSprites()

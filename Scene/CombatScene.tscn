@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://b5wi4l7moykw4"]
+[gd_scene load_steps=15 format=3 uid="uid://b5wi4l7moykw4"]
 
 [ext_resource type="Script" path="res://Scripts/TurnManager.cs" id="1_61iyt"]
 [ext_resource type="Theme" uid="uid://v0w1j5qmmhmj" path="res://new_theme.tres" id="2_ixn37"]
@@ -8,7 +8,9 @@
 [ext_resource type="PackedScene" uid="uid://ctahk88q1msxw" path="res://Scene/Card.tscn" id="4_p2nxv"]
 [ext_resource type="Theme" uid="uid://bypok6x3feade" path="res://Scene/button2.tres" id="5_000v4"]
 [ext_resource type="Texture2D" uid="uid://71i0vhatugs7" path="res://assets/background.png" id="5_1o4kh"]
+[ext_resource type="Script" path="res://Scene/OptionsManager.cs" id="6_swfji"]
 [ext_resource type="Script" path="res://Scene/GameOverScreen.cs" id="7_wp6ao"]
+[ext_resource type="Theme" uid="uid://bk13cn2l24lru" path="res://exp.tres" id="8_jiv2q"]
 [ext_resource type="PackedScene" uid="uid://dbsdmq5dna7iy" path="res://Scene/rolling_text_label.tscn" id="9_bjdj8"]
 [ext_resource type="AudioStream" uid="uid://j63onf571x4g" path="res://assets/Monster Slayer.mp3" id="10_0u184"]
 
@@ -319,6 +321,7 @@ offset_top = 357.0
 offset_right = 1150.0
 offset_bottom = 648.0
 theme = ExtResource("2_rits4")
+script = ExtResource("6_swfji")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Options"]
 layout_mode = 0
@@ -330,6 +333,10 @@ theme = ExtResource("2_rits4")
 [node name="Button" type="Button" parent="CanvasLayer/Options/VBoxContainer"]
 layout_mode = 2
 text = "Menu"
+
+[node name="Button2" type="Button" parent="CanvasLayer/Options/VBoxContainer"]
+layout_mode = 2
+text = "Stats"
 
 [node name="HealthBars" type="Panel" parent="CanvasLayer"]
 offset_right = 1150.0
@@ -379,6 +386,20 @@ layout_mode = 0
 offset_left = 61.0
 offset_right = 573.0
 offset_bottom = 37.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HealthBars"]
+layout_mode = 0
+offset_top = 37.0
+offset_right = 10.0
+offset_bottom = 357.0
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/HealthBars/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "exp"
+theme = ExtResource("8_jiv2q")
+fill_mode = 3
+show_percentage = false
 
 [node name="BackgroundOverlay" type="Panel" parent="CanvasLayer"]
 visible = false
@@ -504,6 +525,7 @@ offset_right = 694.0
 offset_bottom = 348.0
 
 [node name="Background" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(574, 107)
 scale = Vector2(0.651786, 0.683594)
 texture = ExtResource("5_1o4kh")
@@ -518,6 +540,7 @@ stream = ExtResource("10_0u184")
 [connection signal="pressed" from="CanvasLayer/PlayerMoves/VBoxContainer/Slash" to="." method="OnSlashPressed"]
 [connection signal="pressed" from="CanvasLayer/PlayerMoves/VBoxContainer/Defend" to="." method="OnPlayerDefend"]
 [connection signal="pressed" from="CanvasLayer/Options/VBoxContainer/Button" to="." method="OnMenu"]
+[connection signal="pressed" from="CanvasLayer/Options/VBoxContainer/Button2" to="CanvasLayer/Options" method="OnStatOpen"]
 [connection signal="pressed" from="CanvasLayer/StartNextBattle" to="." method="OnStartNextBattle"]
 [connection signal="pressed" from="CanvasLayer/GameOverScreen/Button" to="CanvasLayer/GameOverScreen" method="OnRestart"]
 [connection signal="pressed" from="CanvasLayer/GameOverScreen/Button2" to="CanvasLayer/GameOverScreen" method="OnQuit"]

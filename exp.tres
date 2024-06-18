@@ -1,0 +1,8 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://bk13cn2l24lru"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pgnx5"]
+bg_color = Color(0.423625, 0.744233, 1, 1)
+
+[resource]
+Label/font_sizes/font_size = 20
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_pgnx5")
