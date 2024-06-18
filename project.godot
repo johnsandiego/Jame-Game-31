@@ -35,5 +35,4 @@ project/assembly_name="Jame-game-31"
 
 [rendering]
 
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.154876, 0.154876, 0.154876, 1)

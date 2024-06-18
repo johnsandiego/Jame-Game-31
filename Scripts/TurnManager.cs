@@ -51,6 +51,10 @@ public partial class TurnManager : Node
 
     [Export]
     public AudioStreamPlayer2D audio;
+    [Export]
+    public bool overrideCardType;
+    [Export]
+    public CardType overrideCardTypeValue;
 
     private enum State
     {
@@ -288,7 +292,7 @@ public partial class TurnManager : Node
             player.GlobalPosition = playerNode.GlobalPosition;
             player.StartingPosition = playerNode.GlobalPosition;
             player.Health = player.GetMaxHealthAmount();
-            player.Strength = 5;
+            player.Strength = 500;
             player.Defense = 2;
             player.Speed = 2;
             playerhealth.MaxValue = player.GetMaxHealthAmount();
@@ -548,36 +552,46 @@ public partial class TurnManager : Node
         enemy = enemyScene.Instantiate<Character>();
         enemy.Hit += OnEnemyHit;
         enemy.InitializeSprites();
-        //enemy.GlobalPosition = enemyNode.GlobalPosition;
         enemyNode.AddChild(enemy);
         enemy.StartingPosition = enemyNode.GlobalPosition;
 
-
-        var index = new Random().Next(0, 8);
-        GD.Print("index: ", index);
-        Character.Enemies.TryGetValue(enemy.CardType, out EnemyBase enemyStat);
-
-        GD.Print("cardtype: ", enemy.CardType);
 
 
         Random random = new Random();
         double roll = random.NextDouble();
         double cumulative = 0.0;
 
-        foreach (var enemyRoll in Character.Enemies.Values)
+        if (!overrideCardType)
         {
-            cumulative += enemyRoll.SpawnChance;
-            if (roll < cumulative)
+            foreach (var enemyRoll in Character.Enemies.Values)
             {
-                enemy.CardType = enemy.EnableEnemySprite((int)enemyRoll.CardType);
+                cumulative += enemyRoll.SpawnChance;
+                if (roll < cumulative)
+                {
+                    GD.Print(enemyRoll.CardType);
 
-                enemy.CardType = enemyRoll.CardType;
-                enemy.Health = enemyRoll.Health;
-                enemy.Strength = enemyRoll.Strength;
-                enemy.Defense = enemyRoll.Defense;
-                enemy.Speed = enemyRoll.Speed;
-                break;
+                    enemy.CardType = enemy.EnableEnemySprite((int)enemyRoll.CardType);
+
+                    enemy.CardType = enemyRoll.CardType;
+                    enemy.Health = enemyRoll.Health;
+                    enemy.Strength = enemyRoll.Strength;
+                    enemy.Defense = enemyRoll.Defense;
+                    enemy.Speed = enemyRoll.Speed;
+                    break;
+                }
             }
+        } 
+        else
+        {
+            Character.Enemies.TryGetValue(overrideCardTypeValue, out EnemyBase enemyTemp);
+            GD.Print(overrideCardTypeValue);
+            enemy.CardType = enemy.EnableEnemySprite((int)overrideCardTypeValue);
+
+            enemy.CardType = overrideCardTypeValue;
+            enemy.Health = enemyTemp.Health;
+            enemy.Strength = enemyTemp.Strength;
+            enemy.Defense = enemyTemp.Defense;
+            enemy.Speed = enemyTemp.Speed;
         }
         GD.Print("enemy damage: ", enemy.Strength);
 

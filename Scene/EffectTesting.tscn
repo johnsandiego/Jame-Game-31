@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://dkukjv148m23n"]
+
+[ext_resource type="PackedScene" uid="uid://44lic5bp61pn" path="res://Scene/skills/fire.tscn" id="1_ktooe"]
+[ext_resource type="PackedScene" uid="uid://7384dxsk047v" path="res://Scene/skills/special_effect.tscn" id="2_m8xt7"]
+
+[sub_resource type="Environment" id="Environment_05oei"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 4.31
+glow_strength = 1.2
+glow_blend_mode = 0
+glow_hdr_threshold = 1.02
+glow_hdr_scale = 0.31
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_q1vg6"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 98, 0)
+
+[node name="TestScene" type="Node2D"]
+
+[node name="Fire" parent="." instance=ExtResource("1_ktooe")]
+amount = 150
+
+[node name="Special Effect" parent="." instance=ExtResource("2_m8xt7")]
+visible = false
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_05oei")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+process_material = SubResource("ParticleProcessMaterial_q1vg6")
