@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://ch3x68i4gmivn"]
+[gd_scene load_steps=24 format=3 uid="uid://ch3x68i4gmivn"]
 
 [ext_resource type="Script" path="res://Scripts/Character.cs" id="1_8bcsk"]
 [ext_resource type="Shader" path="res://Shader/HitFlash.gdshader" id="2_1m427"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dnrl3prk82u3s" path="res://assets/skeleton-ready.png" id="6_hal6c"]
 [ext_resource type="Texture2D" uid="uid://ivv0enxigv7w" path="res://assets/vampire.png" id="7_882q1"]
 [ext_resource type="Texture2D" uid="uid://bpd0k5nxsrhvt" path="res://assets/truck-kun-boss.png" id="8_6fsnu"]
+[ext_resource type="Texture2D" uid="uid://o804ryu3vj77" path="res://assets/icon.svg" id="9_eq0r7"]
 [ext_resource type="AudioStream" uid="uid://g5jk0d3eypt8" path="res://assets/hit.mp3" id="9_gq0ik"]
 [ext_resource type="AudioStream" uid="uid://dfwkvoix5a53y" path="res://assets/hit2.mp3" id="10_eusjo"]
 
@@ -378,18 +379,19 @@ size = Vector2(31.25, 35)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_opqus"]
 size = Vector2(31, 35.5)
 
-[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("animPlayer", "slimeSprite", "goblinSprite", "trollSprite", "skeletonSprite", "vampireSprite", "truckkunSprite", "hit")]
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("animPlayer", "slimeSprite", "slimeSprite2", "slimeSprite3", "skeletonSprite", "vampireSprite", "truckkunSprite", "nothingSprite", "hit")]
 scale = Vector2(4, 4)
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_8bcsk")
 animPlayer = NodePath("AnimationPlayer")
 slimeSprite = NodePath("Slime")
-goblinSprite = NodePath("Goblin")
-trollSprite = NodePath("Troll")
+slimeSprite2 = NodePath("Goblin")
+slimeSprite3 = NodePath("Troll")
 skeletonSprite = NodePath("Skeleton")
 vampireSprite = NodePath("Vampire")
 truckkunSprite = NodePath("Truck-kun")
+nothingSprite = NodePath("Nothing")
 hit = NodePath("AudioStreamPlayer2D")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -442,6 +444,13 @@ material = SubResource("ShaderMaterial_fgsav")
 position = Vector2(14.25, -8.5)
 scale = Vector2(0.31125, 0.31307)
 texture = ExtResource("8_6fsnu")
+region_rect = Rect2(53, 33, 14, 15)
+
+[node name="Nothing" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_fgsav")
+position = Vector2(14.25, -8.5)
+scale = Vector2(0.31125, 0.31307)
+texture = ExtResource("9_eq0r7")
 region_rect = Rect2(53, 33, 14, 15)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

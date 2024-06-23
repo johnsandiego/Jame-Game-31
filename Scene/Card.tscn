@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://ctahk88q1msxw"]
+[gd_scene load_steps=14 format=3 uid="uid://ctahk88q1msxw"]
 
 [ext_resource type="Theme" uid="uid://b3tapjlgxruwc" path="res://Scene/button.tres" id="1_twvx5"]
 [ext_resource type="Texture2D" uid="uid://dq3d3ri4ixhr" path="res://assets/Cardtemplate.png" id="1_usdyg"]
@@ -12,8 +12,9 @@
 [ext_resource type="Texture2D" uid="uid://so10gaxm8nu2" path="res://assets/skills/acid.png" id="7_htiy1"]
 [ext_resource type="Texture2D" uid="uid://drbvl5i4numul" path="res://assets/skills/health.png" id="8_sirhl"]
 [ext_resource type="Texture2D" uid="uid://cnuwy3h2kjxv2" path="res://assets/skills/bloodspike.png" id="9_irjea"]
+[ext_resource type="Texture2D" uid="uid://o804ryu3vj77" path="res://assets/icon.svg" id="11_nh7gl"]
 
-[node name="Control" type="Button" node_paths=PackedStringArray("SlimeTextureRect", "BoneTextureRect", "AcidTextureRect", "HealTextureRect", "BloodSpikeTextureRect", "Title", "Description")]
+[node name="Control" type="Button" node_paths=PackedStringArray("SlimeTextureRect", "BoneTextureRect", "AcidTextureRect", "HealTextureRect", "BloodSpikeTextureRect", "NothingTextureRect", "Title", "Description")]
 offset_right = 442.0
 offset_bottom = 648.0
 theme = ExtResource("1_twvx5")
@@ -23,6 +24,7 @@ BoneTextureRect = NodePath("Bone")
 AcidTextureRect = NodePath("Acid")
 HealTextureRect = NodePath("Heal")
 BloodSpikeTextureRect = NodePath("BloodSpike")
+NothingTextureRect = NodePath("Nothing")
 Title = NodePath("Title")
 Description = NodePath("Description")
 
@@ -89,6 +91,17 @@ offset_top = 133.0
 offset_right = 329.0
 offset_bottom = 363.0
 texture = ExtResource("9_irjea")
+expand_mode = 1
+flip_h = true
+
+[node name="Nothing" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 102.0
+offset_top = 133.0
+offset_right = 329.0
+offset_bottom = 363.0
+texture = ExtResource("11_nh7gl")
 expand_mode = 1
 flip_h = true
 

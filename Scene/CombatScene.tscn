@@ -116,13 +116,13 @@ offset_top = 150.134
 offset_right = 344.962
 offset_bottom = 380.134
 
-[node name="Title" parent="CanvasLayer/CardContainer/HBoxContainer/Panel/CardPosition/Card" index="6"]
+[node name="Title" parent="CanvasLayer/CardContainer/HBoxContainer/Panel/CardPosition/Card" index="7"]
 offset_left = 126.005
 offset_top = 50.9384
 offset_right = 405.005
 offset_bottom = 108.938
 
-[node name="Description" parent="CanvasLayer/CardContainer/HBoxContainer/Panel/CardPosition/Card" index="7"]
+[node name="Description" parent="CanvasLayer/CardContainer/HBoxContainer/Panel/CardPosition/Card" index="8"]
 offset_left = 61.6622
 offset_top = 453.083
 offset_right = 409.662
@@ -193,13 +193,13 @@ offset_top = 155.496
 offset_right = 428.072
 offset_bottom = 385.496
 
-[node name="Title" parent="CanvasLayer/CardContainer/HBoxContainer/Panel2/CardPosition2/Card2" index="6"]
+[node name="Title" parent="CanvasLayer/CardContainer/HBoxContainer/Panel2/CardPosition2/Card2" index="7"]
 offset_left = 198.391
 offset_top = 64.3432
 offset_right = 477.391
 offset_bottom = 122.343
 
-[node name="Description" parent="CanvasLayer/CardContainer/HBoxContainer/Panel2/CardPosition2/Card2" index="7"]
+[node name="Description" parent="CanvasLayer/CardContainer/HBoxContainer/Panel2/CardPosition2/Card2" index="8"]
 offset_left = 144.772
 offset_top = 458.445
 offset_right = 492.772
@@ -270,13 +270,13 @@ offset_top = 158.177
 offset_right = 454.882
 offset_bottom = 388.177
 
-[node name="Title" parent="CanvasLayer/CardContainer/HBoxContainer/Panel3/CardPosition3/Card3" index="6"]
+[node name="Title" parent="CanvasLayer/CardContainer/HBoxContainer/Panel3/CardPosition3/Card3" index="7"]
 offset_left = 211.796
 offset_top = 61.6622
 offset_right = 490.796
 offset_bottom = 119.662
 
-[node name="Description" parent="CanvasLayer/CardContainer/HBoxContainer/Panel3/CardPosition3/Card3" index="7"]
+[node name="Description" parent="CanvasLayer/CardContainer/HBoxContainer/Panel3/CardPosition3/Card3" index="8"]
 offset_left = 155.496
 offset_top = 461.126
 offset_right = 503.496
@@ -447,13 +447,13 @@ offset_top = -15.0584
 offset_right = 932.491
 offset_bottom = 1008.94
 
-[node name="Title" parent="CanvasLayer/BackgroundOverlay/RandomCard/CardNoHover" index="6"]
+[node name="Title" parent="CanvasLayer/BackgroundOverlay/RandomCard/CardNoHover" index="7"]
 offset_left = 105.409
 offset_top = 12.7417
 offset_right = 384.409
 offset_bottom = 70.7417
 
-[node name="Description" parent="CanvasLayer/BackgroundOverlay/RandomCard/CardNoHover" index="7"]
+[node name="Description" parent="CanvasLayer/BackgroundOverlay/RandomCard/CardNoHover" index="8"]
 offset_left = 53.0
 offset_top = 436.0
 offset_right = 401.0

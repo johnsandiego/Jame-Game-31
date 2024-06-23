@@ -17,6 +17,9 @@ public partial class CardHandler : Button
 
     [Export]
     public TextureRect BloodSpikeTextureRect { get; set; }
+
+    [Export]
+    public TextureRect NothingTextureRect { get; set; }
     
 	[Export]
 	public Label Title { get; set; }
@@ -79,6 +82,13 @@ public partial class CardHandler : Button
                 CardType = cardType;
                 Damage = 80;
                 break;
+            default:
+                Title.Text = title;
+                Description.Text = description;
+                SetTextureTrue(cardType);
+                CardType = CardType.nothing;
+                Damage = 0;
+                break;
         }
         return this;
 
@@ -128,6 +138,13 @@ public partial class CardHandler : Button
                 AcidTextureRect.Visible = false;
                 HealTextureRect.Visible = false;
                 BloodSpikeTextureRect.Visible = true;
+                break;
+            default:
+                SlimeTextureRect.Visible = false;
+                BoneTextureRect.Visible = false;
+                AcidTextureRect.Visible = false;
+                HealTextureRect.Visible = false;
+                BloodSpikeTextureRect.Visible = false;
                 break;
         }
     }

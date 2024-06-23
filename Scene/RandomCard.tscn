@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cakygaj3dj6jh"]
+[gd_scene load_steps=9 format=3 uid="uid://cakygaj3dj6jh"]
 
 [ext_resource type="Texture2D" uid="uid://dq3d3ri4ixhr" path="res://assets/Cardtemplate.png" id="1_ltyg8"]
 [ext_resource type="Script" path="res://Scripts/CardManager.cs" id="1_xv5s3"]
@@ -7,6 +7,7 @@
 [ext_resource type="Theme" uid="uid://b23kdxlonntwv" path="res://card.tres" id="3_whih2"]
 [ext_resource type="Theme" uid="uid://c2r7boss2uppr" path="res://Carddescription.tres" id="4_u5ohe"]
 [ext_resource type="PackedScene" uid="uid://ctahk88q1msxw" path="res://Scene/Card.tscn" id="4_xs8ud"]
+[ext_resource type="Texture2D" uid="uid://o804ryu3vj77" path="res://assets/icon.svg" id="5_6pqeo"]
 
 [node name="RandomCard" type="Control" node_paths=PackedStringArray("UnknownCard", "CardNoHover", "NoCard", "controls", "replaceContainer")]
 layout_mode = 3
@@ -47,6 +48,7 @@ offset_left = 367.089
 offset_top = 244.123
 offset_right = 655.089
 offset_bottom = 540.123
+texture = ExtResource("5_6pqeo")
 expand_mode = 1
 flip_h = true
 
@@ -62,7 +64,7 @@ text = "Nothing"
 [node name="Description" type="Label" parent="NoCard"]
 layout_mode = 0
 offset_left = 221.0
-offset_top = 707.0
+offset_top = 733.0
 offset_right = 796.0
 offset_bottom = 947.0
 theme = ExtResource("4_u5ohe")
@@ -70,7 +72,6 @@ text = "You didn't get anything. "
 autowrap_mode = 2
 
 [node name="Card" parent="." instance=ExtResource("4_xs8ud")]
-visible = false
 layout_mode = 0
 offset_left = 359.0
 offset_top = 66.0

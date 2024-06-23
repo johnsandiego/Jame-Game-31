@@ -21,6 +21,8 @@ public partial class Character : CharacterBody2D
     [Export]
     public Sprite2D truckkunSprite;
     [Export]
+    public Sprite2D nothingSprite;
+    [Export]
     public Projectile projectile;
     [Export]
     public Sprite2D deadPlayer;
@@ -82,12 +84,14 @@ public partial class Character : CharacterBody2D
 
     public static Dictionary<CardType, EnemyBase> Enemies = new Dictionary<CardType, EnemyBase>()
     {
-        {CardType.slime, new EnemyBase(CardType.slime, "Slime", "Launches a sticky goo.", 5, 2, 2, 2, .3 , new List<CardType>(){ CardType.slime, CardType.troll })},
-        {CardType.skeleton, new EnemyBase(CardType.skeleton, "Skeleton", "Punches.", 8, 3, 2, 2, .3, new List<CardType>(){ CardType.troll, CardType.skeleton }) },
+        {CardType.slime, new EnemyBase(CardType.slime, "Slime", "Launches a sticky goo.", 5, 2, 2, 2, .2 , new List<CardType>(){ CardType.slime, CardType.troll })},
+        {CardType.skeleton, new EnemyBase(CardType.skeleton, "Skeleton", "Punches.", 8, 3, 2, 2, .2, new List<CardType>(){ CardType.troll, CardType.skeleton }) },
         {CardType.troll, new EnemyBase(CardType.troll,"Troll", "Hits with a club.", 10, 5, 5, 2, .2, new List<CardType>(){ CardType.slime, CardType.troll, CardType.skeleton })},
         {CardType.goblin, new EnemyBase(CardType.goblin,"Goblin", "Attacks with a stick.",5, 2, 2, 2, .16, new List<CardType>(){ CardType.slime, CardType.troll, CardType.skeleton })},
         {CardType.vampire, new EnemyBase(CardType.vampire,"Vampire", "Blood sucker", 20, 10, 10, 10, .03, new List<CardType>(){ CardType.slime, CardType.troll, CardType.vampire })},
-        {CardType.truckkun, new EnemyBase(CardType.truckkun,"Truck-kun", "Sends you to another world" , 9999,9999,9999,9999, .01, new List < CardType >() { CardType.slime, CardType.troll })}
+        {CardType.truckkun, new EnemyBase(CardType.truckkun,"Truck-kun", "Sends you to another world" , 9999,9999,9999,9999, .01, new List < CardType >() { CardType.slime, CardType.troll })},
+        {CardType.nothing, new EnemyBase(CardType.nothing, "Nothing", "Better luck next time.", 0, 0, 0, 0, .2 , new List<CardType>(){ CardType.slime, CardType.troll })},
+
     };
 
     // Method to perform an action (e.g., attack, defend)
@@ -110,7 +114,8 @@ public partial class Character : CharacterBody2D
             { 2, slimeSprite3 },
             { 3, skeletonSprite },
             { 4, vampireSprite },
-            { 5, truckkunSprite }
+            { 5, truckkunSprite },
+            { 6, nothingSprite }
         };
     }
 
@@ -253,15 +258,16 @@ public partial class Character : CharacterBody2D
 
     public void UseCard(Character character, CardType cardType)
     {
+        var direction = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(-Rotation)).Normalized();
+
         switch (cardType)
         {
             case CardType.slime:
 
                 projectile = slimeScene.Instantiate<Projectile>();
                 this.targetCharacter = character;
-                var direction = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(-Rotation)).Normalized();
                 projectile.Direction = direction;
-                projectile.GlobalPosition = GlobalPosition + new Vector2(0, -100).Normalized();
+                projectile.GlobalPosition = GlobalPosition + new Vector2(0, -100);
                 AddChild(projectile);
                 CurrentState = State.Busy;
                 //later apply texture of card
@@ -270,7 +276,6 @@ public partial class Character : CharacterBody2D
             case CardType.skeleton:
                 var bone = boneScene.Instantiate<BoneThrow>();
                 this.targetCharacter = character;
-                direction = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(-Rotation)).Normalized();
                 bone.Direction = direction;
                 bone.GlobalPosition = GlobalPosition + new Vector2(0, -100).Normalized();
                 AddChild(bone);
@@ -279,7 +284,6 @@ public partial class Character : CharacterBody2D
             case CardType.goblin:
                 var acid = acidScene.Instantiate<BoneThrow>();
                 this.targetCharacter = character;
-                direction = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(-Rotation)).Normalized();
                 acid.Direction = direction;
                 acid.GlobalPosition = GlobalPosition;
                 AddChild(acid);
@@ -294,7 +298,6 @@ public partial class Character : CharacterBody2D
             case CardType.vampire:
                 var bloodspike = bloodspikeScene.Instantiate<Projectile>();
                 this.targetCharacter = character;
-                direction = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(-Rotation)).Normalized();
                 bloodspike.Direction = direction;
                 bloodspike.GlobalPosition = GlobalPosition;
                 AddChild(bloodspike);
