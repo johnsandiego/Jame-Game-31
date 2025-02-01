@@ -221,7 +221,7 @@ public partial class Character : CharacterBody2D
             AttackFinished = true;
             int damageAmount = new Random().Next(Strength - 2, Strength);
             damageAmount = targetCharacter.IsDefending ? damageAmount / targetCharacter.Defense : damageAmount;
-            if(damageAmount < 0)
+            if (damageAmount < 0)
             {
                 damageAmount = 1;
             }

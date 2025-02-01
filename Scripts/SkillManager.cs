@@ -16,8 +16,6 @@ public partial class SkillManager
         {CardType.nothing, new Skill("Nothing", "Better luck next time", new Dictionary<string, int> { { "Damage", 0 } }, CardType.nothing)},
         {CardType.nothing2, new Skill("Nothing", "Better luck next time", new Dictionary<string, int> { { "Damage", 0 } }, CardType.nothing2)},
         {CardType.nothing3, new Skill("Nothing", "Better luck next time", new Dictionary<string, int> { { "Damage", 0 } }, CardType.nothing3)},
-
-
     };
 
 

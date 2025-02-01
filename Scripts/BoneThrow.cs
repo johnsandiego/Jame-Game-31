@@ -36,7 +36,7 @@ public partial class BoneThrow : CharacterBody2D
     public void OnBodyEntered(Node2D body)
     {
         GD.Print("projectile hit something");
-        if(body != null && body is Character)
+        if (body != null && body is Character)
         {
             //QueueFree();
         }

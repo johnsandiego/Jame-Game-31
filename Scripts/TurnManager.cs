@@ -69,12 +69,12 @@ public partial class TurnManager : Node
         UseCard2 = 3,
         UseCard3 = 4
     }
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
+    {
         InitializePlayer(true);
         SpawnNewEnemy();
-        SetActiveCharacter(player);        
+        SetActiveCharacter(player);
         state = State.WaitingForPlayer;
 
         //get reference
@@ -113,7 +113,7 @@ public partial class TurnManager : Node
     {
         player.cards[index] = null;
         OnEquip(c);
-        
+
     }
 
     public void OnEquip(CardType cardType)
@@ -121,8 +121,8 @@ public partial class TurnManager : Node
         card1Button.Visible = false;
         card2Button.Visible = false;
         card3Button.Visible = false;
-        Skill skill; 
-        switch(cardType)
+        Skill skill;
+        switch (cardType)
         {
             case CardType.slime:
                 if (player.cards.Length < 4)
@@ -130,13 +130,13 @@ public partial class TurnManager : Node
                     skill = new SkillManager().GetSkill(CardType.slime);
                     if (player.cards[0] == null)
                     {
-                        
+
                         card1 = card1.InitializeCard(skill.Title, skill.Description, CardType.slime);
                         card1.Visible = true;
                         player.cards[0] = card1;
 
                     }
-                    else if(player.cards[1] == null)
+                    else if (player.cards[1] == null)
                     {
                         player.cards[1] = card2;
                         card2 = card2.InitializeCard(skill.Title, skill.Description, CardType.slime);
@@ -312,8 +312,8 @@ public partial class TurnManager : Node
     {
         if (state == State.WaitingForPlayer && isPlayerTurn)
         {
-            
-            switch(playerAction)
+
+            switch (playerAction)
             {
                 case PlayerAction.Attacked:
                     state = State.Busy;
@@ -332,7 +332,7 @@ public partial class TurnManager : Node
                     if (player.cards[0].CardType == CardType.troll)
                     {
                         var value = new SkillManager().GetSkill(CardType.troll);
-                        if(value.Stats.TryGetValue("Heal", out int amount))
+                        if (value.Stats.TryGetValue("Heal", out int amount))
                             player.Heal(amount);
 
                         ChooseNextActiveCharacter();
@@ -447,7 +447,7 @@ public partial class TurnManager : Node
         if (enemy.IsDead())
         {
             cardManager.InitializeValues(enemy.CardType);
-            if(enemy.CardType == CardType.vampire && turnCounter > 1)
+            if (enemy.CardType == CardType.vampire && turnCounter > 1)
             {
                 // Get the current scene
                 PackedScene currentScene = (PackedScene)ResourceLoader.Load("res://Scene/ending.tscn");
@@ -463,7 +463,7 @@ public partial class TurnManager : Node
 
         return false;
     }
-    
+
     public void OnDeadFinished()
     {
         GameOverScreen.Visible = true;
@@ -482,7 +482,7 @@ public partial class TurnManager : Node
         //activeCharacter.ShowSelectionCircle();
     }
 
-    private void OnSlashPressed() 
+    private void OnSlashPressed()
     {
         playerAction = PlayerAction.Attacked;
         isPlayerTurn = true;
@@ -580,7 +580,7 @@ public partial class TurnManager : Node
                     break;
                 }
             }
-        } 
+        }
         else
         {
             Character.Enemies.TryGetValue(overrideCardTypeValue, out EnemyBase enemyTemp);

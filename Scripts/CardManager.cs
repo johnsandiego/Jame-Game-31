@@ -2,28 +2,28 @@ using Godot;
 using System;
 public partial class CardManager : Control
 {
-	[Export]
-	public TextureButton UnknownCard;
-	[Export]
-	public CardHandler CardNoHover;
+    [Export]
+    public TextureButton UnknownCard;
+    [Export]
+    public CardHandler CardNoHover;
     [Export]
     public TextureButton NoCard;
     [Export]
-	public VBoxContainer controls;
+    public VBoxContainer controls;
     [Export]
     public HBoxContainer replaceContainer;
-	[Signal]
-	public delegate void EquipEventHandler(CardType cardType);
+    [Signal]
+    public delegate void EquipEventHandler(CardType cardType);
     [Signal]
     public delegate void DiscardEventHandler();
     [Signal]
-    public delegate void ReplaceEventHandler(int index, CardType cardType );
+    public delegate void ReplaceEventHandler(int index, CardType cardType);
 
-	public CardHandler slimeCard;
-	public CardHandler boneCard;
-	public CardHandler acidCard;
-	public CardHandler healCard;
-	public CardHandler bloodSpikeCard;
+    public CardHandler slimeCard;
+    public CardHandler boneCard;
+    public CardHandler acidCard;
+    public CardHandler healCard;
+    public CardHandler bloodSpikeCard;
     public enum CardType
     {
         slime = 0,
@@ -31,7 +31,7 @@ public partial class CardManager : Control
         goblin = 2,
         troll = 3,
         vampire = 4,
-		truckkun = 5,
+        truckkun = 5,
         nothing = 6,
         nothing2 = 7,
         nothing3 = 8,
@@ -39,26 +39,26 @@ public partial class CardManager : Control
 
     public int index;
 
-	public CardType cardType;
+    public CardType cardType;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
-	{
+    {
         //CardNoHover = slimeCard.InitializeCard("Sticky Slime", "Launches a sticky goo causing slowness", CardType.slime);
     }
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
-
-	public void InitializeValues(CardType cardType)
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _Process(double delta)
     {
-		this.cardType = cardType;
+    }
+
+    public void InitializeValues(CardType cardType)
+    {
+        this.cardType = cardType;
         slimeCard = new CardHandler();
-		var skill = new SkillManager().GetSkill(cardType);
+        var skill = new SkillManager().GetSkill(cardType);
         CardNoHover = CardNoHover.InitializeCard(skill.Title, skill.Description, cardType);
-		CardNoHover.Damage = skill.Stats.TryGetValue("Damage", out int value) ? value * 2 : 20;
+        CardNoHover.Damage = skill.Stats.TryGetValue("Damage", out int value) ? value * 2 : 20;
 
         UnknownCard.Visible = true;
         CardNoHover.Visible = false;
@@ -69,16 +69,16 @@ public partial class CardManager : Control
 
 
     public void OnUnknownCardPressed()
-	{
-		UnknownCard.Visible = false;
+    {
+        UnknownCard.Visible = false;
         CardNoHover.Visible = true;
-		controls.Visible = true;
+        controls.Visible = true;
     }
 
-	private int CardTypeIndex(CardType cardType)
-	{
+    private int CardTypeIndex(CardType cardType)
+    {
         int index = 0;
-        switch(cardType)
+        switch (cardType)
         {
             case CardType.slime:
                 index = 0;
@@ -95,21 +95,21 @@ public partial class CardManager : Control
             case CardType.vampire:
                 index = 4;
                 break;
-            }
-            return index;
         }
+        return index;
+    }
 
-	public void OnEquip()
-	{
-		EmitSignal(SignalName.Equip, CardTypeIndex(this.cardType));
+    public void OnEquip()
+    {
+        EmitSignal(SignalName.Equip, CardTypeIndex(this.cardType));
 
-	}
+    }
 
-	public void OnDiscard()
-	{
-		EmitSignal(SignalName.Discard);
+    public void OnDiscard()
+    {
+        EmitSignal(SignalName.Discard);
 
-	}
+    }
 
     public void OnReplace()
     {
